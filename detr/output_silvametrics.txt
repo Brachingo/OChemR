@@ -1,0 +1,6 @@
+Precision Accuracy % - per class.
+molec = Precision : 46.5
+arrow = Precision : 13.1
+text = Precision : 11.2
+plus = Precision : 2.9
+Total mAP - IoU 0.95 : 0.184
