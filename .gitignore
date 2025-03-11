@@ -175,9 +175,6 @@ cython_debug/
 
 images/
 
-Figures/
-
-Github/
 
 *.json
 
