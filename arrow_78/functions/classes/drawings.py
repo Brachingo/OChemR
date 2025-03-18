@@ -408,42 +408,7 @@ class WhiteBackground():
         self.img_w = img_w
         self.img_h = img_h
         
-    '''    
-    def drawI(self,path,current_w, current_h,text):
-        white_img = Image.open(path)
-        white_img = white_img.resize((self.img_w,self.img_h))
-        coords = []
-        xpos = 5
-        ypos = int(self.img_h / 2) + 20
-        # Lets add title or body:
-        if random.randint(1,2) == 1: # Title.
-            thickness = random.randint(2,3)
-            scale = random.randint(3,4)
-            if scale < 4:
-                num_ch = random.randint(2,4)
-            else:
-                num_ch = random.randint(3,5)
-           
-        else: # body
-            pass
-
-       # Read molecule and labeled molecule:
-        I = ImageDraw.Draw(white_img)
-        min_,max_ = 8,12
-        myFont = ImageFont.truetype("fonts/arial.ttf",int(self.img_h * 0.08))  #.load_default()
-        xtext = random.randint(2,int(self.img_w * 0.2))
-        ytext = random.randint(0,50)
-        yinit = ytext
-        xpostexts = []
-        for l in range(2,6):
-            txt = ''.join(secrets.choice(string.ascii_letters) for x in range(random.randint(min_,max_)))
-            I.text((xtext,ytext),txt, font=myFont, fill=(0, 0, 0))
-            size_txt = I.textsize(txt, font=myFont)
-            ytext = ytext + size_txt[1]
-            xpostexts.append(size_txt[0])        
-        coords.append(['2', current_w + xtext, current_h + yinit, current_w + xtext + max(xpostexts),current_h + ytext])
-        return 'white_img',white_img.convert("RGB"), coords
-        '''
+    
     def drawI(self, path, current_w, current_h, text):
         white_img = Image.open(path)
         white_img = white_img.resize((self.img_w, self.img_h))

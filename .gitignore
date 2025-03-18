@@ -175,6 +175,7 @@ cython_debug/
 
 images/
 
+*.csv
 
 *.json
 

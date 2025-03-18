@@ -19,7 +19,7 @@ sys.stdout = sys.__stdout__
 
 # Load image and print only the result
 #mol2 = "images/Englerin-A_3"
-mol2 = "mol_images/Englerin-A_312"
+mol2 = "mol_images/Englerin_A_pc"
 
 img = cv2.imread("../"+mol2+".png")
 if img is not None:
