@@ -188,3 +188,8 @@ detr/silva_output/
 detr/silva_inference/
 
 detr/output_silva/
+
+arrow_78/logs/
+arrow_78/data/decimer_assesment/decimerAI_2.py
+arrow_78/debug/
+!arrow_78/params/params.json
