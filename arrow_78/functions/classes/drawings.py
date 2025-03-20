@@ -247,6 +247,11 @@ class Symbol():
                 y = random.randint(int(self.img_height / 2),int(self.img_height / 2 + int(self.img_height * 0.2)))
                 img,xend,yend = self.createTextLines(img,x,y)
                 coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
+            elif typeImg == "curved":
+                x = random.randint(2,int(self.img_width * 0.08))
+                y = random.randint(30,int(self.img_height / 2))
+                img,xend,yend = self.createTextLines(img,x,y)
+                coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
             else:
                 print(f"mk - Typeimg = {typeImg}, not able to add text.")
 
