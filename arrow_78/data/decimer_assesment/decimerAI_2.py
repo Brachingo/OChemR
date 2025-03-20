@@ -1,3 +1,4 @@
+# Made to run more than 1 analysis at the same time
 import sys
 import cv2
 import os

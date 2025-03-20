@@ -25,7 +25,7 @@ from datetime import datetime
 @catch_and_log
 def runExperiment(loc,labelled_images):
     # Load data  -  Get a list of SMILES molecules.
-    path = "data/molecules.txt"
+    path = "data/molecules_new.txt"
     mol_SMILES = prepareMolecules(path)
 
 
