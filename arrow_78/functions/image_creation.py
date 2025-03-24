@@ -102,7 +102,7 @@ def finalImageCreation(train_path,labelled_path, n_mol, reaction_w, reaction_h, 
     else:
         images_ratio = 25
 
-    for step in range(1,images_ratio): # 25
+    for step in range(1,images_ratio): # range 1 to 25
 
         if step % 6 == 0: # if we are at the most-right position
             img_w = int(total_width - current_width)    # get rest of width as img_w

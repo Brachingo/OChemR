@@ -181,6 +181,8 @@ images/
 
 *.pth
 
+*.O
+
 detr/test_results_batch.1/
 
 detr/silva_output/
@@ -193,3 +195,5 @@ arrow_78/logs/
 arrow_78/data/decimer_assesment/decimerAI_2.py
 arrow_78/debug/
 !arrow_78/params/params.json
+
+FRCNN/test_small

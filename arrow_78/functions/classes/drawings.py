@@ -111,11 +111,14 @@ class Symbol():
         self.rotations = [0,90,180,270]
 
     def insertImageOnWhiteBckg(self,bckground,foreground, current_w, current_h, objtype, width_obj, height_obj = None, xpos = None, ypos = None):
+        print(f"Inside insertImageOnWhiteBckg: {objtype}")
+        # Get the size of the molecule
         if objtype == "plus":
             # Where to paste im2:
+            print(f"Foreground size for plus image: {foreground.size}")
             xpos = random.randint(int(self.img_width / 2 - 10),int(self.img_width / 2 + 10) )
             ypos = int(self.img_height / 2)
-            # Paste the molecule to the image with the rectangle.
+            
             bckground.paste(foreground,(xpos,ypos),foreground) # im2 as 3rd param, to add white background.
             height_obj = width_obj
         else:
@@ -138,7 +141,7 @@ class Symbol():
         arrow_y_coord = current_h + ypos - 1
         arrow_xend_coord =  arrow_x_coord + width_obj + 4
         arrow_yend_coord = arrow_y_coord + height_obj + 4
-
+        #print(f"Arrow coordinates: {arrow_x_coord, arrow_y_coord, arrow_xend_coord, arrow_yend_coord}")
         return bckground, arrow_x_coord, arrow_y_coord,arrow_xend_coord, arrow_yend_coord
 
     def drawArrowPIL(self,im, ptA, ptB, width=2, color=(0,0,0)):
@@ -279,7 +282,7 @@ class Symbol():
             img = Image.open('symbols/white.png')
             img = img.resize((self.img_width,self.img_height))
             im2 = Image.open('symbols/plus/plus'+str(whichplus)+'.png')
-
+            print(f"Plus image: {im2.size}")
             img,arrow_x_coord,arrow_y_coord,arrow_xend_coord,arrow_yend_coord =  self.insertImageOnWhiteBckg(img,im2, current_w, current_h, "plus", length_obj)
             
             coords.append(['3', arrow_x_coord, arrow_y_coord, arrow_xend_coord,arrow_yend_coord])
@@ -317,7 +320,8 @@ class Symbol():
 
                 print(f"We are at: {arrowpath}:")
                 img,arrow_x_coord,arrow_y_coord,arrow_xend_coord,arrow_yend_coord = self.insertImageOnWhiteBckg(img,im2,current_w,current_h,"arrow",arrow_w,arrow_h, xposArr, yposArr)
-
+                # Changed from arrow to curved (object type)
+                
             elif probab == 2: # Vertical
                 typeImg = "vertical"
                 choose2 = int(random.sample((9,10,11),1)[0])
