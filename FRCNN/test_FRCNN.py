@@ -17,12 +17,12 @@ from detectron2.data.datasets import register_coco_instances
 from detectron2.utils.visualizer import ColorMode
 # -------
 
-register_coco_instances("my_dataset_test", {}, "images/json_annotest.json", "images/test/")
+register_coco_instances("my_dataset_test", {}, "../images/json_annotest.json", "../images/test/")
 
 ## Prepare Config File:
 cfg = get_cfg()
 cfg.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml"))
-cfg.MODEL.WEIGHTS = "output/model_final.pth" # os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
+cfg.MODEL.WEIGHTS = "output_silva/model_final.pth" # os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
 cfg.DATASETS.TEST = ("my_dataset_test", )
 cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
 cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.95   # set the testing threshold for this model
@@ -55,7 +55,7 @@ CLASSES = [
 
 ## ----------------- Run Test: Get inference time.
 threshold = 0.95
-tested_images = ['images/test_small/*png'] # 'images/val/*png'
+tested_images = ['../images/val/*png'] # 'images/val/*png'
 for paths in tested_images:
     for it,imageName in enumerate(glob.glob(paths)):
         filename = os.path.basename(imageName)
@@ -89,4 +89,4 @@ for paths in tested_images:
             text = f"{label} {confidence:.2f}"
             color = COLORS[label]
             plot_one_box(box, im, color, label=text)
-        cv2.imwrite('test_results/'+filename, im)
+        cv2.imwrite('test_small/'+filename, im)

@@ -12,16 +12,17 @@ from detectron2.engine import DefaultPredictor
 
 ## Prepare Custom Dataset
 from detectron2.data.datasets import register_coco_instances
-register_coco_instances("my_dataset_train", {}, "images/json_annotation.json", "images/train")
-register_coco_instances("my_dataset_val", {}, "images/json_annotval.json", "images/val")
+register_coco_instances("my_dataset_train", {}, "../images/json_annotation.json", "../images/train")
+register_coco_instances("my_dataset_val", {}, "../images/json_annotval.json", "../images/val")
 
 ## Training Config
 cfg = get_cfg()
 cfg.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml"))
+cfg.OUTPUT_DIR = "output_silva"
 cfg.DATASETS.TRAIN = ("my_dataset_train",)
 cfg.DATASETS.TEST = ("my_dataset_val",)
 cfg.DATALOADER.NUM_WORKERS = 4
-cfg.MODEL.WEIGHTS = "output/model_final.pth" # model_zoo.get_checkpoint_url("COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x.yaml")  # Let training initialize from model zoo
+cfg.MODEL.WEIGHTS = "output_silva/model_final.pth" # model_zoo.get_checkpoint_url("COCO-Detection/faster_rcnn_X_101_32x8d_FPN_3x.yaml")  # Let training initialize from model zoo
 cfg.SOLVER.IMS_PER_BATCH = 4
 cfg.SOLVER.BASE_LR = 0.001
 cfg.SOLVER.GAMMA = 0.05
@@ -30,7 +31,7 @@ cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
 cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
 cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.85
 predictor = DefaultPredictor(cfg)
-evaluator = COCOEvaluator("my_dataset_val", cfg, False, output_dir="output/")
+evaluator = COCOEvaluator("my_dataset_val", cfg, False, output_dir="output_silva/")
 val_loader = build_detection_test_loader(cfg, "my_dataset_val")
 
 ## Create Trainer Model from Facebook's Detectron2
