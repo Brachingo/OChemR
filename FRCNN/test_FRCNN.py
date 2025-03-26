@@ -17,7 +17,9 @@ from detectron2.data.datasets import register_coco_instances
 from detectron2.utils.visualizer import ColorMode
 # -------
 
-register_coco_instances("my_dataset_test", {}, "../images/json_annotest.json", "../images/test/")
+#register_coco_instances("my_dataset_test", {}, "../images/json_annotest.json", "../images/test/")
+# Try on new (Real World) images:
+register_coco_instances("my_dataset_test", {}, "../images/json_annotreal_benz.json", "../images/real_img/benzs")
 
 ## Prepare Config File:
 cfg = get_cfg()
@@ -55,7 +57,7 @@ CLASSES = [
 
 ## ----------------- Run Test: Get inference time.
 threshold = 0.95
-tested_images = ['../images/val/*png'] # 'images/val/*png'
+tested_images = ['../images/real_img/benzs/*png'] # 'images/val/*png'
 for paths in tested_images:
     for it,imageName in enumerate(glob.glob(paths)):
         filename = os.path.basename(imageName)
@@ -89,4 +91,4 @@ for paths in tested_images:
             text = f"{label} {confidence:.2f}"
             color = COLORS[label]
             plot_one_box(box, im, color, label=text)
-        cv2.imwrite('test_small/'+filename, im)
+        cv2.imwrite('test_real/'+filename, im)
