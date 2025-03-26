@@ -196,4 +196,6 @@ arrow_78/data/decimer_assesment/decimerAI_2.py
 arrow_78/try/
 !arrow_78/params/params.json
 
+mAP_featureDetector/
+
 FRCNN/test_inference

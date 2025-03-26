@@ -14,4 +14,4 @@
 ### ml conda/miniconda3/4.9.2
 ### conda activate detectron
 
-python main.py --path ../../images/real_img/benzs --output json_annotreal_benz.json
+python main.py --path ../../real_data/real --output json_annotreal.json
