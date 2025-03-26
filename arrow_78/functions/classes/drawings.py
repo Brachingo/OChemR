@@ -111,11 +111,12 @@ class Symbol():
         self.rotations = [0,90,180,270]
 
     def insertImageOnWhiteBckg(self,bckground,foreground, current_w, current_h, objtype, width_obj, height_obj = None, xpos = None, ypos = None):
-        print(f"Inside insertImageOnWhiteBckg: {objtype}")
+        print(f"Inside insertImageOnWhiteBckg(): {objtype}")
         # Get the size of the molecule
         if objtype == "plus":
             # Where to paste im2:
             print(f"Foreground size for plus image: {foreground.size}")
+            
             xpos = random.randint(int(self.img_width / 2 - 10),int(self.img_width / 2 + 10) )
             ypos = int(self.img_height / 2)
             
@@ -250,11 +251,7 @@ class Symbol():
                 y = random.randint(int(self.img_height / 2),int(self.img_height / 2 + int(self.img_height * 0.2)))
                 img,xend,yend = self.createTextLines(img,x,y)
                 coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
-            elif typeImg == "curved":
-                x = random.randint(2,int(self.img_width * 0.08))
-                y = random.randint(30,int(self.img_height / 2))
-                img,xend,yend = self.createTextLines(img,x,y)
-                coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
+            # No need to add text to curved arrows.
             else:
                 print(f"mk - Typeimg = {typeImg}, not able to add text.")
 
@@ -283,6 +280,7 @@ class Symbol():
             img = img.resize((self.img_width,self.img_height))
             im2 = Image.open('symbols/plus/plus'+str(whichplus)+'.png')
             print(f"Plus image: {im2.size}")
+            # Create the plus sign from scratch in the function
             img,arrow_x_coord,arrow_y_coord,arrow_xend_coord,arrow_yend_coord =  self.insertImageOnWhiteBckg(img,im2, current_w, current_h, "plus", length_obj)
             
             coords.append(['3', arrow_x_coord, arrow_y_coord, arrow_xend_coord,arrow_yend_coord])

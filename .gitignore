@@ -196,4 +196,4 @@ arrow_78/data/decimer_assesment/decimerAI_2.py
 arrow_78/debug/
 !arrow_78/params/params.json
 
-FRCNN/test_small
+FRCNN/test_inference
