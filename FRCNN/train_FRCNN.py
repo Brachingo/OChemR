@@ -28,6 +28,9 @@ if os.path.exists(metricsPath):
         os.remove(metricsPath)
 if os.path.exists(metrics2Path):
         os.remove(metrics2Path)
+# Create Output Directory
+outputPath = "output_silva_custom/"
+os.makedirs(outputPath, exist_ok=True)
 
 ## Training Config
 cfg = get_cfg()
@@ -35,18 +38,18 @@ cfg.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_F
 cfg.DATASETS.TRAIN = ("my_dataset_train",)
 cfg.DATASETS.TEST = ("my_dataset_val",)
 
-cfg.DATALOADER.NUM_WORKERS = 4
-cfg.OUTPUT_DIR = "output_silva/"
+cfg.DATALOADER.NUM_WORKERS = 8
+cfg.OUTPUT_DIR = outputPath
 cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml") # Let training initialize from model zoo
-cfg.SOLVER.IMS_PER_BATCH = 8 
+cfg.SOLVER.IMS_PER_BATCH = 4
 cfg.SOLVER.BASE_LR = 1e-4 
 cfg.SOLVER.WARMUP_ITERS = 1000
-cfg.SOLVER.MAX_ITER = 18750 # 24100 = 51k images. 
-cfg.SOLVER.STEPS = (12000, 18800)
+cfg.SOLVER.MAX_ITER = 23000 # 24100 = 51k images. 
+cfg.SOLVER.STEPS = (15000, 22500)
 cfg.SOLVER.GAMMA = 0.05
-cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 64
+cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
 cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
-cfg.TEST.EVAL_PERIOD = 625
+cfg.TEST.EVAL_PERIOD = 625 # Must be atleast 4000 8000
 
 ## Create Trainer Model from Facebook's Detectron2
 from detectron2.engine import DefaultTrainer
