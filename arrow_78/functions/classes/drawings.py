@@ -104,48 +104,49 @@ class Symbol():
         self.img_width = img_width
         self.img_height = img_height
         self.reaction_width = reaction_width
-        self.probabs = [1,1,1,1,1,2,2,2,2,3,4,4,4,4,4] # 1 = curved arrows. 2 = vertical. 3 = diagonal. 4 = horizontal.
+        self.probabs = [1,1,1,1,1,2,2,2,3,4,4,4,4,4,4] # 1 = curved arrows. 2 = vertical. 3 = diagonal. 4 = horizontal.
         self.percentage_pad = 0
         self.text_padding = 0
         self.num_characters_text = 0
         self.rotations = [0,90,180,270]
 
-    def insertImageOnWhiteBckg(self,bckground,foreground, current_w, current_h, objtype, width_obj, height_obj = None, xpos = None, ypos = None):
+    def insertImageOnWhiteBckg(self, bckground, foreground, current_w, current_h, objtype, width_obj, height_obj=None, xpos=None, ypos=None):
         print(f"Inside insertImageOnWhiteBckg(): {objtype}")
-        # Get the size of the molecule
         if objtype == "plus":
-            # Where to paste im2:
             print(f"Foreground size for plus image: {foreground.size}")
             
-            xpos = random.randint(int(self.img_width / 2 - 10),int(self.img_width / 2 + 10) )
-            ypos = int(self.img_height / 2)
+            # Get the size of the plus image
+            plus_width, plus_height = foreground.size
             
-            bckground.paste(foreground,(xpos,ypos),foreground) # im2 as 3rd param, to add white background.
-            height_obj = width_obj
+            # Calculate xpos and ypos to center the plus image
+            xpos = (self.img_width - plus_width) // 2
+            ypos = (self.img_height - plus_height) // 2
+            
+            # Ensure foreground is RGBA
+            if foreground.mode != 'RGBA':
+                foreground = foreground.convert('RGBA')
+            
+            # Get the alpha channel (should be opaque where the plus is)
+            alpha = foreground.split()[3]
+            
+            # Paste the plus using the correct alpha as the mask
+            bckground.paste(foreground, (xpos, ypos), alpha)
+            
+            height_obj = plus_height  # Set height based on the image
+            width_obj = plus_width   # Set width based on the image
         else:
+            # Handle other object types (existing code)
             pass
-            # Paste the molecule to the image with the rectangle.
-            #bckground.paste(foreground,(xpos,ypos),foreground) # im2 as 3rd param, to add white background.
         
-        if foreground.mode != 'RGBA':
-            foreground = foreground.convert('RGBA')
-        # Get the alpha channel
-        alpha = foreground.split()[3]
-        # Create a white image of the same size with alpha channel
-        white = Image.new('L', foreground.size, 255)
-        # Combine the two images
-        foreground.putalpha(white)
-        bckground.paste(foreground,(xpos,ypos), alpha)
+        # Store arrow position based on centered coordinates
+        arrow_x_coord = current_w + xpos
+        arrow_y_coord = current_h + ypos
+        arrow_xend_coord = arrow_x_coord + width_obj
+        arrow_yend_coord = arrow_y_coord + height_obj
         
-        # Store arrow position
-        arrow_x_coord = current_w + xpos - 1
-        arrow_y_coord = current_h + ypos - 1
-        arrow_xend_coord =  arrow_x_coord + width_obj + 4
-        arrow_yend_coord = arrow_y_coord + height_obj + 4
-        #print(f"Arrow coordinates: {arrow_x_coord, arrow_y_coord, arrow_xend_coord, arrow_yend_coord}")
-        return bckground, arrow_x_coord, arrow_y_coord,arrow_xend_coord, arrow_yend_coord
-
-    def drawArrowPIL(self,im, ptA, ptB, width=2, color=(0,0,0)):
+        return bckground, arrow_x_coord, arrow_y_coord, arrow_xend_coord, arrow_yend_coord
+    
+    def drawArrowPIL(self,im, ptA, ptB, width=4, color=(0,0,0)):
         """Draw line from ptA to ptB with arrowhead at ptB"""
         
         # Get drawing context
@@ -310,6 +311,7 @@ class Symbol():
                 yposArr = int(arrowsize[1])
                 arrow_w = int(arrowsize[2])
                 arrow_h = int(arrowsize[3])
+                print(f"Arrow size: {arrowsize[4]}")
                 typeImg = arrowsize[4]
                 im2 = Image.open("symbols/corners/"+MorL+dirsize+arrowpath)
                 im2_h,im2_w = im2.size
@@ -317,7 +319,7 @@ class Symbol():
                     im2 = im2.resize((self.img_width,self.img_height))
 
                 print(f"We are at: {arrowpath}:")
-                img,arrow_x_coord,arrow_y_coord,arrow_xend_coord,arrow_yend_coord = self.insertImageOnWhiteBckg(img,im2,current_w,current_h,"arrow",arrow_w,arrow_h, xposArr, yposArr)
+                img,arrow_x_coord,arrow_y_coord,arrow_xend_coord,arrow_yend_coord = self.insertImageOnWhiteBckg(img,im2,current_w,current_h, typeImg, arrow_w, arrow_h, xposArr, yposArr)
                 # Changed from arrow to curved (object type)
                 
             elif probab == 2: # Vertical
