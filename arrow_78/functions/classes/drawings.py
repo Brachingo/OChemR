@@ -104,7 +104,7 @@ class Symbol():
         self.img_width = img_width
         self.img_height = img_height
         self.reaction_width = reaction_width
-        self.probabs = [1,1,1,1,1,2,2,2,3,4,4,4,4,4,4] # 1 = curved arrows. 2 = vertical. 3 = diagonal. 4 = horizontal.
+        self.probabs = [1,1,1,2,2,2,3,4,4,4,4,4,4] # 1 = curved arrows. 2 = vertical. 3 = diagonal. 4 = horizontal.
         self.percentage_pad = 0
         self.text_padding = 0
         self.num_characters_text = 0
@@ -324,18 +324,20 @@ class Symbol():
                     dirsize = "512/"
                 elif self.reaction_width <= 650:
                     dirsize = "650/"
-                elif self.reaction_width <= 800:
+                elif self.reaction_width <=  800:
                     dirsize = "800/"
                 else:
                     dirsize = "1024/"
                 MorL = random.sample(("M/","L/"),1)[0]
-                arrowpath = random.choice(os.listdir("symbols/corners/"+MorL+dirsize))
+                #arrowpath = random.choice(os.listdir("symbols/corners/"+MorL+dirsize))
+                arrowpath = random.choice(os.listdir("symbols/corners/M/"+dirsize))
+                
                 arrowsize = os.path.basename(arrowpath).strip(".png").split('_')
                 xposArr = int(arrowsize[0])
                 yposArr = int(arrowsize[1])
                 arrow_w = int(arrowsize[2])
                 arrow_h = int(arrowsize[3])
-                print(f"Arrow size: {arrowsize[4]}")
+                #print(f"Arrow size: {arrowsize[4]}")
                 typeImg = arrowsize[4]
                 im2 = Image.open("symbols/corners/"+MorL+dirsize+arrowpath)
                 im2_h,im2_w = im2.size
