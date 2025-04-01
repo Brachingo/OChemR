@@ -19,7 +19,7 @@ def prepareMolecules(path):
     """
     n_mol_used = 0
     with open(path) as infile: # File from which read the molecules
-        with open('molecules.txt','w') as outfile: # File to which write them 
+        with open('molecules_new.txt','w') as outfile: # File to which write them 
             for it,line in enumerate(infile.readlines()):
                 if it < 500000:                    
                     newline = line.strip().split()[1]

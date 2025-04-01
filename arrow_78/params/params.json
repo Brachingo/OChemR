@@ -2,11 +2,11 @@
 	"dataset_params": { 
 			    "train_path" : "debug/img/",
 		            "labelled_path" : "debug/img_labelled/",
-		            "img_width" : [512,650,800,1024],
-			    "img_height" : [512,650,800,1024],
-			    "molecules_sizes" : [3,6,8,10],
+		            "img_width" : [512,650,800,1024, 800, 1024],
+			    "img_height" : [512,650,800,1024, 800, 1024],
+			    "molecules_sizes" : [3,6,8,10, 8, 10],
 			    "molecules_rotations" : [0,30,100,330],
 			    "num_molecules_per_reaction" : 12,
 			    "num_reactions_per_epoch" : 50,
-			    "epochs" : 4}
+			    "epochs" : 6}
 }
