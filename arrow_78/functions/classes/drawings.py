@@ -134,11 +134,33 @@ class Symbol():
             
             height_obj = plus_height  # Set height based on the image
             width_obj = plus_width   # Set width based on the image
+    
+        elif objtype == "curved":
+            # Get the size of the curved arrow image
+            curved_width, curved_height = foreground.size
+            
+            # Calculate xpos and ypos to center the curved arrow image
+            xpos = (self.img_width - curved_width) // 2
+            ypos = (self.img_height - curved_height) // 2
+            
+            # Ensure foreground is RGBA
+            if foreground.mode != 'RGBA':
+                foreground = foreground.convert('RGBA')
+            
+            # Get the alpha channel (should be opaque where the arrow is)
+            alpha = foreground.split()[3]
+            
+            # Paste the curved arrow using the correct alpha as the mask
+            bckground.paste(foreground, (xpos, ypos), alpha)
+            
+            height_obj = curved_height
+            width_obj = curved_width
         else:
             # Handle other object types (existing code)
             pass
         
         # Store arrow position based on centered coordinates
+        print(f"Creating arrow: {objtype} at ({xpos}, {ypos})") 
         arrow_x_coord = current_w + xpos
         arrow_y_coord = current_h + ypos
         arrow_xend_coord = arrow_x_coord + width_obj
@@ -241,6 +263,7 @@ class Symbol():
         else: # typeImg == "u or d" -> Corners:
             # add text depending on placetext variable.
             if typeImg == "u": # write up... like in plus images.
+                print(f"Adding text to corners?")
                 self.addTextInImage(img,"plus", coords, current_w, current_h)
             elif typeImg == "d": # write down.
                 x = random.randint(2,int(self.img_width * 0.08))
@@ -292,6 +315,7 @@ class Symbol():
             probab = random.sample(self.probabs,1)[0]
 
             if probab == 1: # if curved arrow:
+                print(f"Probab = {probab}, meaning CURVED arrow.")
                 typeImg = "curved"
                 img = Image.open('symbols/white.png')
                 img = img.resize((self.img_width,self.img_height))
@@ -319,7 +343,7 @@ class Symbol():
                     im2 = im2.resize((self.img_width,self.img_height))
 
                 print(f"We are at: {arrowpath}:")
-                img,arrow_x_coord,arrow_y_coord,arrow_xend_coord,arrow_yend_coord = self.insertImageOnWhiteBckg(img,im2,current_w,current_h, typeImg, arrow_w, arrow_h, xposArr, yposArr)
+                img,arrow_x_coord,arrow_y_coord,arrow_xend_coord,arrow_yend_coord = self.insertImageOnWhiteBckg(img,im2,current_w,current_h, "curved", arrow_w, arrow_h, xposArr, yposArr)
                 # Changed from arrow to curved (object type)
                 
             elif probab == 2: # Vertical
