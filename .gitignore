@@ -198,6 +198,7 @@ arrow_78/debug/
 !arrow_78/params/params.json
 arrow_78/cache/corners/
 mAP_featureDetector/
+Figures/
 
 FRCNN/test_inference
 FRCNN/output_silva_custom/

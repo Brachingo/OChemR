@@ -111,9 +111,9 @@ class Symbol():
         self.rotations = [0,90,180,270]
 
     def insertImageOnWhiteBckg(self, bckground, foreground, current_w, current_h, objtype, width_obj, height_obj=None, xpos=None, ypos=None):
-        print(f"Inside insertImageOnWhiteBckg(): {objtype}")
+        #print(f"Inside insertImageOnWhiteBckg(): {objtype}")
         if objtype == "plus":
-            print(f"Foreground size for plus image: {foreground.size}")
+            #print(f"Foreground size for plus image: {foreground.size}")
             
             # Get the size of the plus image
             plus_width, plus_height = foreground.size
@@ -160,7 +160,7 @@ class Symbol():
             pass
         
         # Store arrow position based on centered coordinates
-        print(f"Creating arrow: {objtype} at ({xpos}, {ypos})") 
+        #print(f"Creating arrow: {objtype} at ({xpos}, {ypos})") 
         arrow_x_coord = current_w + xpos
         arrow_y_coord = current_h + ypos
         arrow_xend_coord = arrow_x_coord + width_obj
@@ -263,7 +263,7 @@ class Symbol():
         else: # typeImg == "u or d" -> Corners:
             # add text depending on placetext variable.
             if typeImg == "u": # write up... like in plus images.
-                print(f"Adding text to corners?")
+                #print(f"Adding text to corners?")
                 self.addTextInImage(img,"plus", coords, current_w, current_h)
             elif typeImg == "d": # write down.
                 x = random.randint(2,int(self.img_width * 0.08))
@@ -303,7 +303,7 @@ class Symbol():
             img = Image.open('symbols/white.png')
             img = img.resize((self.img_width,self.img_height))
             im2 = Image.open('symbols/plus/plus'+str(whichplus)+'.png')
-            print(f"Plus image: {im2.size}")
+            #print(f"Plus image: {im2.size}")
             # Create the plus sign from scratch in the function
             img,arrow_x_coord,arrow_y_coord,arrow_xend_coord,arrow_yend_coord =  self.insertImageOnWhiteBckg(img,im2, current_w, current_h, "plus", length_obj)
             
@@ -315,7 +315,7 @@ class Symbol():
             probab = random.sample(self.probabs,1)[0]
 
             if probab == 1: # if curved arrow:
-                print(f"Probab = {probab}, meaning CURVED arrow.")
+                #print(f"Probab = {probab}, meaning CURVED arrow.")
                 typeImg = "curved"
                 img = Image.open('symbols/white.png')
                 img = img.resize((self.img_width,self.img_height))
@@ -344,7 +344,7 @@ class Symbol():
                 if im2_h > self.img_height or im2_w > self.img_width:
                     im2 = im2.resize((self.img_width,self.img_height))
 
-                print(f"We are at: {arrowpath}:")
+                #print(f"We are at: {arrowpath}:")
                 img,arrow_x_coord,arrow_y_coord,arrow_xend_coord,arrow_yend_coord = self.insertImageOnWhiteBckg(img,im2,current_w,current_h, "curved", arrow_w, arrow_h, xposArr, yposArr)
                 # Changed from arrow to curved (object type)
                 
