@@ -89,7 +89,11 @@ Encoder-decoder attention files can be found in the Backend-Output-detections pa
 </p>
 
 ### 2 - OCR
-For OCR we used a PaddleOCR model, that must be trained yet...
+For Optical Character Recognition (OCR), we used a PaddleOCR model, an open-source tool optimized for extracting text from images. It applies deep learning techniques to detect and recognize text regions, even in complex layouts or low-quality scans. This step was essential for identifying and extracting relevant textual information, such as labels, annotations, or chemical names, from the input documents before structural analysis
+<p align="center">
+  <img src="github/images/paddleocr.png"/>
+</p>
+
 
 
 ### 3 - DECIMER AI
@@ -99,6 +103,10 @@ In order to translate molecules from the input images to SMILES strings we used 
     <img src="github/images/Molvec.png" alt="Detected molecules with ViT" width=480 height=220>
   </a>
 </p>
+<p align="center">
+  <img src="github/images/DECIMER.png"/>
+</p>
+
 
 ## Output Files
 A randomly selected small sample of the test set is evaluated under the folders "test_results" of each approach. DETR, FRCNN and RetinaNet. Check qualitatevly the performance of the models in there.
