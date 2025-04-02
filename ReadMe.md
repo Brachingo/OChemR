@@ -39,16 +39,15 @@
 ## Description
 From a chemical reaction image, detect and classify molecules, text and arrows by using a Vision Transformer (DETR). The detections are then translated into text by using an OCR or into SMILES by using <a href=https://decimer.ai/> DECIMER AI</a>. The direction of the reaction is detected and preserved into the output file.
 
+Input:
+<br>
+<a><img src="github/images/Englerin_A_pc.png" alt="Englerin-A" width=200 height=200></a>
+<br>
 
 Output:
-
 ```text
-Molecule:
-<a><img src="Backend/moo_images/Englerin-A_pc.png" alt="Englerin-A" width=200 height=200></a>
-
 SMILES:
 CC(C)[C@]12C[C@H]([C@](C)([C@@H]3CC[C@@H](C)[C@H]3[C@@H]1OC(=O)/C(/[2H])=C(\[2H])/C4=CC=CC=C4)O2)OC(=O)CO[2H]​
-
 ```
 
 ## Step by step
@@ -69,7 +68,8 @@ A DETR model with a ResNet50 backbone is used to detect the objects in the image
 </p>
 
 ##### Training Dataset
-Syntetic Dataset consisting of 50k images that are randomly created to simulate the real-world reactions publications distribution.
+Syntetic Dataset consisting of 90k images that are syntheticaly created to simulate the real-world reactions publications distribution.
+We also implement a small validation set of 8k images and a testing set of 2k. Also, to see how the model performs, we implement a small dataset with "real-world" reactions extracted from the <a href="https://www.organic-chemistry.org/"> Organic Chemistry Portal</a>
 
 ##### Training Parameters
 * Learning Rate: 1e-4
@@ -89,26 +89,19 @@ Encoder-decoder attention files can be found in the Backend-Output-detections pa
 </p>
 
 ### 2 - OCR
-OCR model from DocTr library was trained on chemical-related data generated from US chemical patents. To come up with the training data set, the Text Recognition Data Generator tool was used. The resulting weights were used to extract textual information from text detections.
-
-
-### 3 - MolVec
-Towards recognizing the information present in the molecule objects detected, we utilized the open-access user interface MolVec.
-
+For Optical Character Recognition (OCR), we used a PaddleOCR model, an open-source tool optimized for extracting text from images. It applies deep learning techniques to detect and recognize text regions, even in complex layouts or low-quality scans. This step was essential for identifying and extracting relevant textual information, such as labels, annotations, or chemical names, from the input documents before structural analysis
 <p align="center">
-  <a>
-    <img src="github/images/Molvec.png" alt="Detected molecules with ViT" width=480 height=220>
-  </a>
+  <img src="github/images/paddleocr.png"  width=500 height=275/>
 </p>
 
-### 4 - Pixel Magic
-In pursuance of preserving the real path of the whole reaction, the direction of the arrows detected was extracted.
 
+
+### 3 - DECIMER AI
+In order to translate molecules from the input images to SMILES strings we used DECIMER AI, an open-source OCSR that uses deep learning to detect, segment, and recognize chemical structures from scientific documents. It turns images of molecules into machine-readable formats, helping extract chemical data from scanned papers and literature.
 <p align="center">
-  <a>
-    <img src="github/images/arrows.png" alt="Detected arrows with ViT" width=400 height=220>
-  </a>
+  <img src="github/images/DECIMER.png"  width=500 height=350/>
 </p>
+
 
 ## Output Files
 A randomly selected small sample of the test set is evaluated under the folders "test_results" of each approach. DETR, FRCNN and RetinaNet. Check qualitatevly the performance of the models in there.
@@ -132,13 +125,6 @@ Aggregating the aforementioned steps outcome, we can reconstruct JSON and text f
         "post_mol": "CCCC=O"
     }
 }
-```
-
-```text
-Reaction X
-
-SMILES:
-C=Cc1ccc2[nH]cc(C[C@H](N)C(=O)OF)c2c1>>C/C=C(\\C)CN1C2CCC(=O)[C@]1(C)Cc1c2[nH]c2ccc(C)cc12.O>>molecule8>>molecule5>>BCc1ccc2[nH]c3c(c2c1-c1c(O)ccc(C)c1C1=C(C)C2CC4/C(=C\\C)CN2C(C1)C4CC)CC1C(CC)C24CC3N1[C@@H]2/C4=C/C.C.CC=O.CC=O>>C=C1CC2(C#N)C3(C)CC1C1CCNC12CC1=C3Cc2ccc(C)c(-c3c([O-])ccc4[nH]c5c(c34)CC3C[C@H]4C5(C)CC(C)([C@@H](C)CCO)C34CC3CC3)c21
 ```
 
 ## Benchmarking
@@ -180,28 +166,30 @@ Download the [DETR_Resnet50](https://drive.google.com/drive/folders/1ZIMEQseSTqT
 ## Contributing
 DETR - https://github.com/facebookresearch/detectron2
 
-DocTr - https://github.com/mindee/doctr
+DocTr - [https://github.com/mindee/doctr](https://paddlepaddle.github.io/PaddleOCR/main/en/index.html)
 
-MolVec - https://github.com/ncats/molvec
+MolVec - [https://github.com/ncats/molvec](https://github.com/Kohulan/DECIMER-Image_Transformer)
 
 ## Creators
-[![Linkedin](https://i.stack.imgur.com/gVE0j.png)](https://www.linkedin.com/mark-martori-lopez)
-Mark Martori Lopez
+[![Linkedin](https://i.stack.imgur.com/gVE0j.png)](https://www.linkedin.com/mark-martori-lopez) Mark Martori Lopez
+[![Linkedin](https://i.stack.imgur.com/gVE0j.png)](https://www.linkedin.com/in/lucas-silva-perez-983b0a312/) Lucas Silva Perez
+
 [![GitHub](https://i.stack.imgur.com/tskMh.png)](https://github.com/markmartorilopez)
+[![GitHub](https://i.stack.imgur.com/tskMh.png)](https://github.com/brachingo)
 
 ## Thanks
 This thesis would not have been possible without the guidance of Dr. Daniel Probst as my supervisor, whom I deeply thank.
-Throughout the writing of this dissertation I have received a great deal of support by all my colleagues at the [Accelerated Discovery](https://www.zurich.ibm.com)Team of IBM Research Zurich. 
+Throughout the writing of this dissertation I have received a great deal of support by all my colleagues at the Department of Plant Sciences at WUR.
 
 
 ## Citing
 ```bib
 @software{M.Martori2022,
-  author = {Martori, Mark and Probst, Daniel},
-  month = {6},
+  author = {Martori, Mark; Probst, Daniel and Silva, Lucas},
+  month = {9},
   title = {{Machine Learning approach for chemical reactions digitalisation.}},
   url = {https://github.com/markmartorilopez/,
-  version = {0.0},
-  year = {2022}
+  version = {0.5},
+  year = {2025}
 }
 ```
