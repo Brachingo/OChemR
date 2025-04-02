@@ -39,17 +39,16 @@
 ## Description
 From a chemical reaction image, detect and classify molecules, text and arrows by using a Vision Transformer (DETR). The detections are then translated into text by using an OCR or into SMILES by using <a href=https://decimer.ai/> DECIMER AI</a>. The direction of the reaction is detected and preserved into the output file.
 
-TRY THE COMPLETE VERSION OUT AT:
-https://rxn.app.accelerate.science/rxn/
-under "Optical Chemical Recognition".
 
 Output:
 
 ```text
-Reaction X
+Molecule:
+<a><img src="Backend/moo_images/Englerin-A_pc.png" alt="Englerin-A" width=200 height=200></a>
 
 SMILES:
-C=Cc1ccc2[nH]cc(C[C@H](N)C(=O)OF)c2c1>>C/C=C(\\C)CN1C2CCC(=O)[C@]1(C)Cc1c2[nH]c2ccc(C)cc12.O>>molecule8>>molecule5>>BCc1ccc2[nH]c3c(c2c1-c1c(O)ccc(C)c1C1=C(C)C2CC4/C(=C\\C)CN2C(C1)C4CC)CC1C(CC)C24CC3N1[C@@H]2/C4=C/C.C.CC=O.CC=O>>C=C1CC2(C#N)C3(C)CC1C1CCNC12CC1=C3Cc2ccc(C)c(-c3c([O-])ccc4[nH]c5c(c34)CC3C[C@H]4C5(C)CC(C)([C@@H](C)CCO)C34CC3CC3)c21
+CC(C)[C@]12C[C@H]([C@](C)([C@@H]3CC[C@@H](C)[C@H]3[C@@H]1OC(=O)/C(/[2H])=C(\[2H])/C4=CC=CC=C4)O2)OC(=O)CO[2H]​
+
 ```
 
 ## Step by step
