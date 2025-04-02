@@ -68,7 +68,8 @@ A DETR model with a ResNet50 backbone is used to detect the objects in the image
 </p>
 
 ##### Training Dataset
-Syntetic Dataset consisting of 50k images that are randomly created to simulate the real-world reactions publications distribution.
+Syntetic Dataset consisting of 90k images that are syntheticaly created to simulate the real-world reactions publications distribution.
+We also implement a small validation set of 8k images and a testing set of 2k. Also, to see how the model performs, we implement a small dataset with "real-world" reactions extracted from the <a href="organic-chemistry.org">Organic Chemistry Portal</a>
 
 ##### Training Parameters
 * Learning Rate: 1e-4
