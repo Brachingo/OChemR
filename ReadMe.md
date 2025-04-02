@@ -91,7 +91,7 @@ Encoder-decoder attention files can be found in the Backend-Output-detections pa
 ### 2 - OCR
 For Optical Character Recognition (OCR), we used a PaddleOCR model, an open-source tool optimized for extracting text from images. It applies deep learning techniques to detect and recognize text regions, even in complex layouts or low-quality scans. This step was essential for identifying and extracting relevant textual information, such as labels, annotations, or chemical names, from the input documents before structural analysis
 <p align="center">
-  <img src="github/images/paddleocr.png"/>
+  <img src="github/images/paddleocr.png"  width=300 height=275/>
 </p>
 
 
@@ -99,12 +99,7 @@ For Optical Character Recognition (OCR), we used a PaddleOCR model, an open-sour
 ### 3 - DECIMER AI
 In order to translate molecules from the input images to SMILES strings we used DECIMER AI, an open-source OCSR that uses deep learning to detect, segment, and recognize chemical structures from scientific documents. It turns images of molecules into machine-readable formats, helping extract chemical data from scanned papers and literature.
 <p align="center">
-  <a>
-    <img src="github/images/Molvec.png" alt="Detected molecules with ViT" width=480 height=220>
-  </a>
-</p>
-<p align="center">
-  <img src="github/images/DECIMER.png"/>
+  <img src="github/images/DECIMER.png"  width=300 height=275/>
 </p>
 
 
