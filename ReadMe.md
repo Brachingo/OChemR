@@ -40,7 +40,10 @@
 From a chemical reaction image, detect and classify molecules, text and arrows by using a Vision Transformer (DETR). The detections are then translated into text by using an OCR or into SMILES by using <a href=https://decimer.ai/> DECIMER AI</a>. The direction of the reaction is detected and preserved into the output file.
 
 Input:
-<a><img src="github/images/Englerin_A_pc.png" alt="Englerin-A" width=200 height=200></a>
+<br>
+<a><img src="github/images/Englerin-A-312.png" alt="Englerin-A" width=200 height=200></a>
+<br>
+
 Output:
 ```text
 SMILES:
