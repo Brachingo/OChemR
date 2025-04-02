@@ -9,6 +9,7 @@
     <a>V.0</a>
     ·
     <a href="https://www.zurich.ibm.com">IBM Research Zurich</a>
+    <br>
     <a>V.1</</a>
     .
     <a href="https://www.wur.nl/en.htm">Wageningen University & Research</a>
