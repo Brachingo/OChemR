@@ -205,79 +205,101 @@ class Symbol():
         # Now draw the arrowhead triangle
         draw.polygon([vtx0, vtx1, ptB], fill=color)
         return im
-
-    def createTextLines(self,img,xtext,ytext):
-        min_, max_ = 6 , 11
-        xpostexts = []
-        # Prepare Draw 
-        I1 = ImageDraw.Draw(img)
-        myFont = ImageFont.truetype("fonts/arial.ttf",random.randint(int(self.img_height * 0.058),int(self.img_height * 0.0625)))#.load_default()
-        yendtext = ytext
-        for it in range(0,random.randint(1,4)):
-            txt = ''.join(secrets.choice(string.ascii_letters) for x in range(random.randint(min_,max_)))
-            I1.text((xtext,yendtext),txt, font=myFont, fill=(0, 0, 0))
-            #size_txt = I1.textsize(txt, font=myFont)
-            bbox = I1.textbbox((xtext, yendtext), txt, font=myFont)
-            size_txt = (bbox[2] - bbox[0], bbox[3] - bbox[1])  # Width and height from bbox
-            yendtext = yendtext + size_txt[1]
-            xpostexts.append(size_txt[0])
+    def createTextLines(self, img, xtext, ytext):
+    # Increase character count for wider boxes, reduce max lines for shorter boxes
+        min_chars, max_chars = 8, 14  # Increased from 6-11 to 8-14 for wider text
+        max_lines = 3  # Reduced from 4 to 3 for shorter boxes
         
-        xendtext = max(xpostexts) if len(xpostexts) > 1 else xpostexts[0]
+        I1 = ImageDraw.Draw(img)
+        # Slightly reduce font size range for shorter lines
+        font_size = random.randint(int(self.img_height * 0.055), int(self.img_height * 0.06))
+        myFont = ImageFont.truetype("fonts/arial.ttf", font_size)
+        
+        xpostexts = []
+        yendtext = ytext
+        
+        for _ in range(random.randint(1, max_lines)):  # Use reduced max_lines
+            # Generate longer text lines
+            txt = ''.join(secrets.choice(string.ascii_letters) 
+                        for _ in range(random.randint(min_chars, max_chars)))
+            
+            I1.text((xtext, yendtext), txt, font=myFont, fill=(0, 0, 0))
+            bbox = I1.textbbox((xtext, yendtext), txt, font=myFont)
+            size_txt = (bbox[2] - bbox[0], bbox[3] - bbox[1])
+            
+            yendtext += size_txt[1]  # Vertical position for next line
+            xpostexts.append(size_txt[0])  # Track widths
+
+        xendtext = max(xpostexts) if xpostexts else 0
         return img, int(xendtext), int(yendtext)
 
-    def addTextInImage(self,img,typeImg, coords, current_w, current_h):
-        
+    def addTextInImage(self, img, typeImg, coords, current_w, current_h):
         if typeImg == "plus":
-            # Write text on the 1st third of image
-            x = random.randint(10,int(self.img_width * 0.2))
-            y = random.randint(int(self.img_width * 0.1),int(self.img_width * 0.25))
-            # how many lines?
-            img,xend,yend = self.createTextLines(img,x,y)
-            coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
-
+            # only put text 1 out of 4 times
+            random_plus_text = random.randint(1, 4)
+            if random_plus_text == 3: 
+                x = random.randint(10, int(self.img_width * 0.15))
+                y = random.randint(int(self.img_height * 0.15), int(self.img_height * 0.25))
+                img, xend, yend = self.createTextLines(img, x, y)
+                coords.append(['2', current_w + x, current_h + y, current_w + x + xend, current_h + yend])
+        
         elif typeImg == "horizontal":
-            # write text on the 1st third of image and on the 3rd-third of image.
-            x = random.randint(10,int(self.img_width * 0.2))
-            y = random.randint(int(self.img_width * 0.1),int(self.img_width * 0.2))
-            img,xend,yend = self.createTextLines(img,x,y)
-            coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
-            # write text on the 1st third of image and on the 3rd-third of image.
-            x = random.randint(2,int(self.img_width * 0.08))
-            y = random.randint(int(self.img_height / 2) + 20,int(self.img_height / 2 + int(self.img_height * 0.2)))
-            img,xend,yend = self.createTextLines(img,x,y)
-            coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
+            # Only do this 3 out of 4 times
+            random_horizontal_text = random.randint(1, 4)
+            if random_horizontal_text != 2:
+                # Center-left positioning with vertical emphasis
+                center_x = int(self.img_width * 0.17)  # 35% from left instead of true center
+                x_range = int(self.img_width * 0.085)  # Tight horizontal variation
+                arrow_y = self.img_height // 2
 
+                # First text: higher and left-aligned
+                x = random.randint(center_x - x_range, center_x + x_range)
+                y = random.randint(arrow_y - 40, arrow_y - 27)  # 15px higher than before
+                img, xend, yend = self.createTextLines(img, x, y)
+                coords.append(['2', current_w + x, current_h + y, current_w + x + xend, current_h + yend])
+
+                # Second text: closer to arrow and left-shifted
+                x = random.randint(center_x - x_range, center_x + x_range)
+                y = random.randint(arrow_y + 5, arrow_y + 20)  # 5px tighter to arrow
+                img, xend, yend = self.createTextLines(img, x, y)
+                coords.append(['2', current_w + x, current_h + y, current_w + x + xend, current_h + yend])
+            
         elif typeImg == "vertical" or typeImg == "claudators":
-            # write text on the LEFT of image.
-            x = random.randint(2,int(self.img_width * 0.08))
-            y = random.randint(5,int(self.img_height / 2))
-            img,xend,yend = self.createTextLines(img,x,y)
-            coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
+            x = random.randint(2, int(self.img_width * 0.08))
+            y = random.randint(5, int(self.img_height / 2))
+            img, xend, yend = self.createTextLines(img, x, y)
+            coords.append(['2', current_w + x, current_h + y, current_w + x + xend, current_h + yend])
+            
+        elif typeImg == "curved":
+            # Only make text for curved arrows 1 out of 4 times
+            random_corner_text = random.randint(1, 4)
+            if random_corner_text == 1:
+            # Add text to cornered images
+                x = random.randint(2, int(self.img_width * 0.08))
+                y = random.randint(30, int(self.img_height / 2))
+                img, xend, yend = self.createTextLines(img, x, y)
+                coords.append(['2', current_w + x, current_h + y, current_w + x + xend, current_h + yend])
 
         elif typeImg == "diagonal": 
-            # text on leftmiddle and rightmiddle or PASS
-            x = random.randint(2,int(self.img_width * 0.08))
-            y = random.randint(30,int(self.img_height / 2))
-            img,xend,yend = self.createTextLines(img,x,y)
-            coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
-        else: # typeImg == "u or d" -> Corners:
-            # add text depending on placetext variable.
-            if typeImg == "u": # write up... like in plus images.
-                #print(f"Adding text to corners?")
-                self.addTextInImage(img,"plus", coords, current_w, current_h)
-            elif typeImg == "d": # write down.
-                x = random.randint(2,int(self.img_width * 0.08))
-                y = random.randint(int(self.img_height / 2),int(self.img_height / 2 + int(self.img_height * 0.2)))
-                img,xend,yend = self.createTextLines(img,x,y)
-                coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
-            elif typeImg == "r" or typeImg =="l":
+            x = random.randint(2, int(self.img_width * 0.08))
+            y = random.randint(30, int(self.img_height / 2))
+            img, xend, yend = self.createTextLines(img, x, y)
+            coords.append(['2', current_w + x, current_h + y, current_w + x + xend, current_h + yend])
+        else:
+            if typeImg == "u": 
+                self.addTextInImage(img, "plus", coords, current_w, current_h)
+            elif typeImg == "d":  # Centered text for curved arrows
+                x = random.randint(int(self.img_width * 0.35), int(self.img_width * 0.65))  # Horizontal center
+                y = random.randint(int(self.img_height * 0.4), int(self.img_height * 0.6))   # Vertical center
+                img, xend, yend = self.createTextLines(img, x, y)
+                coords.append(['2', current_w + x, current_h + y, current_w + x + xend, current_h + yend])
+            elif typeImg == "r" or typeImg == "l":
                 x = int(self.img_width / 2) if typeImg == "r" else 10
-                y = random.randint(int(self.img_height / 2),int(self.img_height / 2 + int(self.img_height * 0.2)))
-                img,xend,yend = self.createTextLines(img,x,y)
-                coords.append(['2', current_w + x, current_h + y, current_w +  x + xend, current_h + yend])
-            # No need to add text to curved arrows.
+                y = random.randint(int(self.img_height * 0.45), int(self.img_height * 0.55))
+                img, xend, yend = self.createTextLines(img, x, y)
+                coords.append(['2', current_w + x, current_h + y, current_w + x + xend, current_h + yend])
             else:
-                print(f"mk - Typeimg = {typeImg}, not able to add text.")
+                print(f"mk - TypeImg = {typeImg}, not able to add text.")
 
         return img, coords
     
@@ -453,7 +475,7 @@ class WhiteBackground():
 
         # Prepare to add text
         I = ImageDraw.Draw(white_img)
-        min_, max_ = 8, 12
+        min_, max_ = 6, 10
         myFont = ImageFont.truetype("fonts/arial.ttf", int(self.img_h * 0.08))
         xtext = random.randint(2, int(self.img_w * 0.2))
         ytext = random.randint(0, 50)

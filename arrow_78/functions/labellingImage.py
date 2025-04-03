@@ -53,7 +53,7 @@ def writeLabelsInFile(train_path,labelled_path, ep,it,coordinates,prev_draw,fina
     Get coordinates from dictionary and write its correct form in the labeled text output file.
     """
     # Open a file
-    labelling = random.randint(1,500) # Store only 1 out of 500 labelled imgs. # NEED TO CHANGE FOR ORIGINAL
+    labelling = random.randint(1,1000) # Store only 1 out of 500 labelled imgs. # NEED TO CHANGE FOR ORIGINAL
     with open(train_path + 'Final_reaction_Epoch'+str(ep)+'_it_'+str(it)+'.txt','w') as coordinates_file:
         for coords in list(coordinates.keys()):
             try:

@@ -1,7 +1,7 @@
 {
 	"dataset_params": { 
-			    "train_path" : "../images/train/",
-		            "labelled_path" : "../images/labelled_train/",
+			    "train_path" : "debug/img/",		
+		            "labelled_path" : "debug/img_labelled/",
 		            "img_width" : [512,650,800,1024, 800, 1024],
 			    "img_height" : [512,650,800,1024, 800, 1024],
 			    "molecules_sizes" : [3,6,8,10, 8, 10],
