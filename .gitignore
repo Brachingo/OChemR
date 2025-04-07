@@ -199,5 +199,9 @@ arrow_78/debug/
 arrow_78/cache/corners/
 mAP_featureDetector/
 
-FRCNN/test_inference
-FRCNN/output_silva_custom/
+FRCNN/test_inference/
+FRCNN/test_inference_2/
+FRCNN/output_silva/
+FRCNN/test_real/
+FRCNN/test_real_2/
+FRCNN/test_real_3/
