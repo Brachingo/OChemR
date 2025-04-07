@@ -24,18 +24,17 @@
  - folder: arrowDS/params/
  - script: params.json
         -   {
-	            "dataset_params": 
-                     {   
-                         "train_path" : "images/train/",
-                         "labelled_path" : "images/labelled/",
-                         "img_width" : [512,650,800,1024],
-			    "img_height" : [512,650,800,1024],
-			    "molecules_sizes" : [3,6,8,10],
-			    "molecules_rotations" : [0,30,100,330],
-			    "num_molecules_per_reaction" : 12,
-			    "num_reactions_per_epoch" : 15000,
-			    "epochs" : 4}
-}
+            "dataset_params": { 
+                "train_path" : "<train_path>",
+                    "labelled_path" : "<labelled_path>",
+                    "img_width" : [512,650,800,1024, 800, 1024],
+                "img_height" : [512,650,800,1024, 800, 1024],
+                "molecules_sizes" : [3,6,8,10, 8, 10],
+                "molecules_rotations" : [0,30,100,330],
+                "num_molecules_per_reaction" : 12,
+                "num_reactions_per_epoch" : 15000,
+                "epochs" : 6}
+            }
 
 ##### Step 3: Run.
  - folder: arrow_78
