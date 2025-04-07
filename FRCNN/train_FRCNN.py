@@ -29,7 +29,7 @@ if os.path.exists(metricsPath):
 if os.path.exists(metrics2Path):
         os.remove(metrics2Path)
 # Create Output Directory
-outputPath = "output_silva_custom/"
+outputPath = "output_silva/"
 os.makedirs(outputPath, exist_ok=True)
 
 ## Training Config
@@ -47,9 +47,9 @@ cfg.SOLVER.WARMUP_ITERS = 1000
 cfg.SOLVER.MAX_ITER = 23000 # 24100 = 51k images. 
 cfg.SOLVER.STEPS = (15000, 22500)
 cfg.SOLVER.GAMMA = 0.05
-cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
+cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 64
 cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
-cfg.TEST.EVAL_PERIOD = 625 # Must be atleast 4000 8000
+cfg.TEST.EVAL_PERIOD = 4000 # Must be atleast 4000 8000
 
 ## Create Trainer Model from Facebook's Detectron2
 from detectron2.engine import DefaultTrainer
