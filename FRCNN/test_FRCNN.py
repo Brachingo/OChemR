@@ -91,4 +91,5 @@ for paths in tested_images:
             text = f"{label} {confidence:.2f}"
             color = COLORS[label]
             plot_one_box(box, im, color, label=text)
-        cv2.imwrite('test_real_3/'+filename, im)
+
+        cv2.imwrite('results/test_real_3/'+filename, im)
