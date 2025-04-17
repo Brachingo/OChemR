@@ -160,7 +160,7 @@ def finalImageCreation(train_path,labelled_path, n_mol, reaction_w, reaction_h, 
             iimmgg = reaction[step]
         except:
             iimmgg = reaction['arrow_'+str(step)]
-        print(f"Current Image Size = {iimmgg.size} type of img = {prev_draw}")
+        #print(f"Current Image Size = {iimmgg.size} type of img = {prev_draw}")
 
     # concatenate all the images and add coloured boxes - Improve...
     save_odd_row = [25,26,27,28,29,30] # Add coloured boxes in first or 3rd row of main image.

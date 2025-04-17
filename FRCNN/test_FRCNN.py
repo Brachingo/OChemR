@@ -19,7 +19,7 @@ from detectron2.utils.visualizer import ColorMode
 
 #register_coco_instances("my_dataset_test", {}, "../images/json_annotest.json", "../images/test/")
 # Try on new (Real World) images:
-register_coco_instances("my_dataset_test", {}, "../real_data/json_annotreal.json", "../images/real")
+register_coco_instances("my_dataset_test", {}, "../real_data/json_annotreal.json", "../real_data/real")
 
 ## Prepare Config File:
 cfg = get_cfg()
@@ -91,4 +91,5 @@ for paths in tested_images:
             text = f"{label} {confidence:.2f}"
             color = COLORS[label]
             plot_one_box(box, im, color, label=text)
+
         cv2.imwrite('results/test_real_3/'+filename, im)
