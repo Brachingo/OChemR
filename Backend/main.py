@@ -17,7 +17,7 @@ sys.path.append(p)
 
 # ViT - Detect Objects in image (Molecules - Arrows/+ - Text)
 from Backend.functions.detr_inference import detr_inference
-from detr.models import build_model
+from detr.detr.models import build_model
 
 # OCR - Get text from detected Text bboxes from ViT.
 import easyocr
@@ -80,6 +80,8 @@ def get_args_parser():
                         help="Number of attention heads inside the transformer's attentions")
     parser.add_argument('--num_queries', default=100, type=int,
                         help="Number of query slots")
+    parser.add_argument('--num_classes', type=int, default=5, 
+                        help='Number of object classes (including no-object)')
     parser.add_argument('--pre_norm', action='store_true')
 
     # * Segmentation

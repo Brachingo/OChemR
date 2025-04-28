@@ -5,6 +5,8 @@ import rdkit
 from rdkit import Chem
 from rdkit.Chem import Draw, AllChem
 from rdkit.Chem.Draw.MolDrawing import DrawingOptions # B&W colors.
+from rdkit.Chem import rdAbbreviations
+
 # Image
 import cv2
 from PIL import Image
@@ -59,6 +61,8 @@ class Molecule():
         molec = AllChem.MolFromSmiles(mol)
         d = Draw.MolDraw2DCairo(self.img_width,self.img_height)
         # d.drawOptions().addStereoAnnotation = True
+        # Add abbreviations to the molecule
+        d.drawOptions().explicitMethyl = True
         d.drawOptions().useBWAtomPalette() # Set B&W default color - updateAtomPalette({k: (0, 0, 0) for k in DrawingOptions.elemDict.keys()})
         d.drawOptions().fixedBondLength = 20
         d.drawOptions().rotate = 0

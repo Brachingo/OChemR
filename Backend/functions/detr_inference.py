@@ -8,9 +8,9 @@ import random
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-p = os.path.abspath('../detr/')
+p = os.path.abspath('../detr/detr/')
 sys.path.append(p)
-from ...detr.datasets.arrow import make_arrow_transforms
+from datasets.coco import make_coco_transforms
 
 ## Rescaling/Filtering bboxes ----------
 def box_cxcywh_to_xyxy(x):
@@ -95,7 +95,7 @@ def detr_inference(images_path, model, device, output_path, threshold):
         orig_image = Image.open(img_sample).convert("RGB")
         width, height = orig_image.size
 
-        transform = make_arrow_transforms("val")
+        transform = make_coco_transforms("val")
         dummy_target = {
             "size": torch.as_tensor([int(height), int(width)]),
             "orig_size": torch.as_tensor([int(height), int(width)])

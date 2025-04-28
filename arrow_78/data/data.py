@@ -19,7 +19,7 @@ def prepareMolecules(path):
     """
     n_mol_used = 0
     with open(path) as infile: # File from which read the molecules
-        with open('molecules_new.txt','w') as outfile: # File to which write them 
+        with open('SMILES.txt','w') as outfile: # File to which write them 
             for it,line in enumerate(infile.readlines()):
                 if it < 500000:                    
                     newline = line.strip().split()[1]
@@ -37,4 +37,4 @@ def prepareMolecules(path):
     print(f"Found and used {n_mol_used} molecules that can be read by rdkit.")
     return 1
 
-a = prepareMolecules('CIDSMILES.txt')
+a = prepareMolecules('SMILES.txt')

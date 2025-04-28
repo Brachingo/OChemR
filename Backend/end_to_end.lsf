@@ -1,7 +1,8 @@
-### RUN END TO END OCHEMR 
+### RUN END TO END OCHEMR
+
 
 # FOLDER: ocr/Backend/
 
 # LET'S TRY:
 
-python3 main.py --data_path images/ --resume ../detr/output/checkpoint.pth --detection_dir output_mytry/detections/ --output_dir output_mytry/ --device_detr cpu
+python main.py --data_path images/ --output_dir output/ --resume ../detr/detr/outputs/checkpoint.pth --num_classes 4
