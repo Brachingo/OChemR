@@ -14,4 +14,4 @@
 ### ml conda/miniconda3/4.9.2
 ### conda activate detectron
 
-python main.py --path ../../images/val/ --output json_annotval.json
+python main.py --path ../../images/val2017/ --output custom_val.json

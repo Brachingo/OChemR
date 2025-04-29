@@ -6,4 +6,4 @@
 #BSUB -R "span[ptile=1]"
 
 
-python main.py --dataset_file "custom" --coco_path "../../images/" --output_dir "outputs" --resume "detr-r50_no-class-head.pth" --num_classes 4 --epochs 30
+python main.py --dataset_file "custom" --coco_path "../../images/" --output_dir "outputs_150e" --resume "detr-r50_no-class-head.pth" --num_classes 4 --epochs 100
