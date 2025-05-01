@@ -183,13 +183,7 @@ images/
 
 *.O
 
-detr/test_results_batch.1/
 
-detr/silva_output/
-
-detr/silva_inference/
-
-detr/output_silva/
 
 arrow_78/logs/
 arrow_78/data/decimer_assesment/decimerAI_2.py
@@ -202,6 +196,10 @@ Figures/
 
 FRCNN/results/
 
+detr/detectron_2/detr/outputs/
+detr/detectron_2/detr/outputs_2/
+detr/detectron_2/detr/outputs_3/
+detr/detectron_2/detr/images/
 
 detr_Mark/
 
