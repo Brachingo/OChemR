@@ -11,6 +11,7 @@ import os
 import glob
 import tensorflow as tf
 import time
+import matplotlib.pyplot as plt
 
 p = os.path.abspath('../')
 sys.path.append(p)
@@ -113,7 +114,7 @@ def get_args_parser():
 
     parser.add_argument('--device_detr', default='cpu',
                         help='device to use for training / testing')
-    parser.add_argument('--resume', default = 'detr/output/checkpoint.pth', help='resume from checkpoint')
+    parser.add_argument('--resume', default = 'detr/output/checkpoint.pth', help='Get model weights from checkpoint')
 
     parser.add_argument('--thresh', default=0.98, type=float)
     #### ----- End ViT. ---------------
@@ -172,13 +173,38 @@ def main(args_detr):
 
     threshold = args_detr.thresh
     model, _, _ = build_model(args_detr) # Get DETR model with current args.
+    # This is used to load model from "purebreed" DETR, we are using a custom with Detectron2
+    """
     if args_detr.resume: # Load weights.
         checkpoint = torch.load(args_detr.resume, map_location='cpu', weights_only=False)
         model.load_state_dict(checkpoint['model'])
     model.to(device_detr)
+    """
+    # Trying to load weights from DETR-Detectron2
+    """
+    if args_detr.resume:
+        # 1. Load the checkpoint in CPU
+        checkpoint = torch.load(args_detr.resume, map_location='cpu')
+        sd = checkpoint['model']  # Original state_dict
+
+        # 2. Remove prefix "detr." from all keys
+        new_sd = {}
+        for k, v in sd.items():
+            if k.startswith('detr.'):
+                new_sd[k[len('detr.'):]] = v
+            else:
+                new_sd[k] = v
+
+        # 3. Load model with strict=False
+        model.load_state_dict(new_sd, strict=False)
+    """
+    model.to(device_detr)
+
+    # Load model weights from model_final.pth
 
     ## 2: Load OCR for text_imgs  - EasyOCR --------------------
-    reader = easyocr.Reader(['en']) #, gpu= gpu # this needs to run only once to load the model into memory
+    #reader = easyocr.Reader(['en']) #, gpu= gpu # this needs to run only once to load the model into memory 
+    # reader was used then using EasyOCR to get text from images. Now we use PaddleOCR.
 
     print("DETR Inference ...")
     # Run detr inference
@@ -225,7 +251,7 @@ def main(args_detr):
                     arrowname = "arrows/"+filename.replace(".",str(step)+".")
                     cv2.imwrite(arrowname,new_img)
 
-            elif label == 2:                                   # Text - OCR - DocTr -> Change for PADDLEOCR use
+            elif label == 2:                                   # Text - OCR - PADDLEOCR
                 textname = "text_images/"+filename.replace(".",str(step)+".")
                 cv2.imwrite(textname,new_img)
                 # PaddleOCR

@@ -1,3 +1,0 @@
-Filename = per_creation.png
-SMILES = CCC1=C(C)[C@@H](C)CC(C1)C(C=C)N>>CCC1C[C@H](C)[C@@H](C(C)C1)C(=O)[O-]>>[CH2+][CH]C(C)C1=C[C@@H](C)CC(CC)[C@@H]1C
-
