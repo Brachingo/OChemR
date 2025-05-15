@@ -4,7 +4,6 @@ import argparse
 from email.mime import image
 import os
 import sys
-import distutils.core
 import torch
 from pathlib import Path
 import json
@@ -13,22 +12,19 @@ import glob
 import tensorflow as tf
 import time
 import matplotlib.pyplot as plt
-import matplotlib
-print("Primary imports done.")
 
 p = os.path.abspath('../')
 sys.path.append(p)
 
-
 # ViT - Detect Objects in image (Molecules - Arrows/+ - Text)
 from Backend.functions.detr_inference import detr_inference
 from detr.detr.models import build_model
-print("Imports done for DETR inference.")
+
 # OCR - Get text from detected Text bboxes from ViT.
 import easyocr
 from paddleocr import PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True, lang="en")  # Initialize PaddleOCR
-print("Imports done for OCR inference.")
+
 
 # Molvec - Translate Molecules to SMILES
 from Backend.functions.mol2smiles_dec import img_to_smiles_decimer
@@ -38,45 +34,9 @@ import cv2
 from Backend.functions.findArrows import get_arrow_direction
 from Backend.functions.finDirection import findClosestType,groupMolecules,orderArrows
 import json
-print("Imports done for direction inference.")
+
 # Output
 from Backend.functions.storeresults import storeResults
-
-p = os.path.abspath('detr/detectron2/detr')
-sys.path.append(p)
-# Some basic setup:
-# Setup detectron2 logger
-import detectron2
-from detectron2.utils.logger import setup_logger
-setup_logger()
-print("Logger setup done.")
-# import some common libraries
-
-# import some common detectron2 utilities
-from detectron2 import model_zoo
-from detectron2.engine import DefaultPredictor
-from detectron2.config import get_cfg
-from detectron2.utils.visualizer import Visualizer
-from detectron2.data import MetadataCatalog, DatasetCatalog
-from detectron2.data.datasets import register_coco_instances
-print("Imports done for detectron2.")
-
-from d2.detr import add_detr_config
-print("Imports done for detectron2 training.")
-
-# current path
-print(f"Current path for COCO annotation = {os.getcwd()}")
-register_coco_instances("custom_train",
-                        {},
-                        "../images/annotations/custom_train.json",
-                        "../images/train2017/")
-
-register_coco_instances("custom_val",
-                        {},
-                        "../images/annotations/custom_val.json",
-                        "../images/val2017/")
-
-
 
 #### ARGUMENTS
 def get_args_parser():
@@ -156,7 +116,7 @@ def get_args_parser():
                         help='device to use for training / testing')
     parser.add_argument('--resume', default = 'detr/output/checkpoint.pth', help='Get model weights from checkpoint')
 
-    parser.add_argument('--thresh', default=0.95, type=float)
+    parser.add_argument('--thresh', default=0.98, type=float)
     #### ----- End ViT. ---------------
 
     # Device
@@ -240,22 +200,8 @@ def main(args_detr):
     
     model.to(device_detr)
     """
-    # Print my current path
-    print(f"Current path for model loading = {os.getcwd()}")
-    
-    
     # Load model weights from model_final.pth
-    cfg = get_cfg()
-    add_detr_config(cfg)
-    cfg.merge_from_file("../detr/detectron_2/detr/d2/configs/detr_256_6_6_torchvision.yaml")
-    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5 # Set threshold for this model
-    cfg.DATASETS.TRAIN = ("custom_train",)
-    cfg.DATASETS.TEST = ("custom_val",)
-    cfg.MODEL.WEIGHTS = '../detr/detectron_2/detr/outputs_5/model_final.pth' # Set path model .pth
-    cfg.MODEL.DETR.NUM_CLASSES = 4
-    cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
-    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.95 # Confidence threshold for this model
-    model = DefaultPredictor(cfg)
+    
         
     
     ## 2: Load OCR for text_imgs  - EasyOCR --------------------
@@ -264,7 +210,7 @@ def main(args_detr):
 
     print("DETR Inference ...")
     # Run detr inference
-    detr_outputs = detr_inference(img_files, model, device_detr, detection_path, args_detr.thresh)
+    detr_outputs = detr_inference(img_files, model, device_detr, detection_path, threshold)
 
     ## 3: Translate all bboxes found by ViT:
     for it, (image_path, outputs) in enumerate(list(detr_outputs.items())):
@@ -295,19 +241,17 @@ def main(args_detr):
                     SMILES_dict[step] = "molecule"+str(step)   # If Molvec can't translate, we store molecule+keyidx.
                 else: 
                     SMILES_dict[step] = smiles                 # Store SMILES
-                                                  # DEBUGGING
-                molname = "mol_images/"+filename.replace(".",str(step)+".")
-                cv2.imwrite(molname, new_img)
+                if debugging:                                  # DEBUGGING
+                    molname = "mol_images/"+filename.replace(".",str(step)+".")
+                    cv2.imwrite(molname, new_img)
 
 
             elif label == 1:                                   # If bbox is an arrow:
                 startpoint,endpoint = get_arrow_direction(new_img,image_path,step, debugging)
                 SMILES_dict[step] = [startpoint,endpoint]      # Store Start/End points of arrow.
                 if debugging:
-                    print(f"Arrow startpoint = {startpoint} and endpoint = {endpoint}.\n")
-
-                arrowname = "arrows/"+filename.replace(".",str(step)+".")
-                cv2.imwrite(arrowname,new_img)
+                    arrowname = "arrows/"+filename.replace(".",str(step)+".")
+                    cv2.imwrite(arrowname,new_img)
 
             elif label == 2:                                   # Text - OCR - PADDLEOCR
                 textname = "text_images/"+filename.replace(".",str(step)+".")
