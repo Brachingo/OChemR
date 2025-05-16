@@ -41,7 +41,7 @@ From a chemical reaction image, detect and classify molecules, text and arrows b
 
 Input:
 <br>
-<a><img src="github/images/Aspirin.png" alt="Englerin-A" width=200 height=200></a>
+<a><img src="github/images/Aspirin.png" alt="Aspirin" width=200 height=200></a>
 <br>
 
 Output:

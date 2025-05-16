@@ -193,7 +193,7 @@ arrow_78/debug/
 arrow_78/cache/corners/
 mAP_featureDetector/
 Figures/
-
+!github/images/
 FRCNN/results/
 
 detr/detectron_2/detr/outputs/
