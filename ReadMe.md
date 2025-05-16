@@ -19,7 +19,7 @@
 ##
 <p align="center">
   <a>
-    <img src="github/images/Figure_1-1.png" alt="Workflow for OChemR" width=570 height=440>
+    <img src="github/images/Figure_1-1.png" alt="Workflow for OChemR" width=670 height=560>
   </a>
 </p>
 
