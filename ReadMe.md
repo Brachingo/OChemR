@@ -128,12 +128,11 @@ Aggregating the aforementioned steps outcome, we can reconstruct JSON and text f
 - Follow steps in arrow_78/README.md file.
 
 ### Evaluation
-- DETR/detr/:
-    - python3 main.py --batch_size 8 --no_aux_loss --eval --resume "output/checkpoint.pth" --arrow_path "images/val/" --output_dir "output/"
+- Done in the training while its running. The evaluation is done every x iterations. The evaluation is done on the validation set. 
 
 ### Inference
-- DETR/detr/:
-    - python3 attention_DETR.py --resume output/checkpoint.pth
+- detr/detectron_2/detr/:
+    - python3 inference_D2.py
 
 ### End-to-End OChemR (From image to JSON)
 - Backend/:

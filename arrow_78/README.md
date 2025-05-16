@@ -3,20 +3,19 @@
 ## Generate Training data set
 ### Target Structure:
 - images/
-    - json_annotation.json  # JSONs for DETR training.
-    - json_annotval.json    #
+    - custom_train.json     # JSONs for DETR training.
+    - custom_val.json       #
     - json_annotest.json    #
-    - train.csv             # Pixel Mean and Pixel St.Dev.
-    - train/
-    - val/
-    - test/
-    - labelled_train/
+    - train2017/
+    - val2017/
+    - test2017/
+    - labelled_train2017/
     
 ##### Step 1: Set proper paths:
  - folder: arrow_78
  - script : params.json
-        - train_path = "location where train images will be" ex: images/train/
-        - labelled_path = "location where train images will be" ex: images/train/
+        - train_path = "location where train images will be" ex: ../images/train2017/
+        - labelled_path = "location where train images will be" ex: ../images/labelled2017/
 
 
 
@@ -32,9 +31,12 @@
                 "molecules_sizes" : [3,6,8,10, 8, 10],
                 "molecules_rotations" : [0,30,100,330],
                 "num_molecules_per_reaction" : 12,
-                "num_reactions_per_epoch" : 15000,
+                "num_reactions_per_epoch" : 10000,
                 "epochs" : 6}
             }
+ - By running 10000 reactions per epoch, we will get 60k images in 6 epochs.
+ - For validation set, we will use 15% of the training set (1500 reactions per epoch). 9k images.
+ - For test set, we only do 200 reactions per epoch. 1200 images.
 
 ##### Step 3: Run.
  - folder: arrow_78
@@ -46,6 +48,7 @@
 
 ##### Step 5: Loop for validation images.
  - Remember to change "train_path" in all scripts to validation path. ex: images/val/
+ - Remember to also change number of reactions per epoch to 1500, and in file `labellingImage.py` the number of reactions that will be labelled (line 56)
 
 ##### Step 6: Create .json files to run DETR.
  - folder: DatasetsConversion/_Yolo2COCO/
@@ -59,148 +62,37 @@
 
  - TRAIN:
  - script: run.lsf
-        - --path location where train images are. ex: images/train/
+        - --path location where train images are. ex: ../../images/train2017/
         - --output json_annotation.json
  - terminal: bash < run.lsf
 
  - VAL:
  - script: runval.lsf
-        - --path location where validation images are. ex: images/val/
+        - --path location where validation images are. ex: ../../images/val2017/
         - --output json_annotval.json
  - terminal: bash < runval.lsf
 
  - TEST:
- - Add images to test folder if not done yet. ex: images/test/
+ - Add images to test folder if not done yet.
  - script: runtest.lsf
-        - --path location where validation images are. ex: images/test/
+        - --path location where validation images are. ex: ../../images/test2017/
         - --output json_annotest.json
  - terminal: bash < runtest.lsf
 
+
 ##### Step 7: Move json file to images/ folder:
  - folder: DatasetConversion/_Yolo2COCO/output/
-        - terminal: mv json* "path to images/ fodler" ex: images/
+        - terminal: mv json* "path to images/annotations/ folder"
 
 ## DETR Custom Dataset Training:
  - ##### Step 0: Clone DETR: 
- - terminal: git clone https://github.com/facebookresearch/detr.git
+ - terminal: git clone https://github.com/woctezuma/finetune-detr.git
 
- - ##### Step 1: Create own arrow.py dataset builder:
- - folder: detr/datasets/
- - terminal: cp coco.py arrow.py  # let's get coco.py as backbone.
- - script: arrow.py
-        - Change all coco occurrences to arrow.
-        - Set:
-            PATHS = {
-                "train" : ("images/train" , "json_annotation.json"),
-                "val" : ("images/val/" , "json_annotval.json")
-            }
- - ##### Step 2: Modify __init__.py to use own dataset builder:
- - folder: detr/datasets/
- - script: __init__.py     Add the following:
-        - from .arrow import build as build_arrow  # import own builder.
-        - Under line 20 add:
-            - if args.dataset_file == 'arrow':
-                return build_arrow(image_set, args)
+ In order to get a better training than the one in the original repo, we will modify some files.
 
- - ##### Step 3: Edit main.py to use own parameters:
- - folder: detr/
- - script: main.py
-        - --num_queries, default = 100  # 72 is the max. #obj in dataset (05/03/22). Leave a margin for test images and bad queries. Set to 100.
-        - --coco_path change to --arrow_path
+ - To train the model on previous weights, we have to follow the steps from the original repo. But instead of training the model in the Jupyter Notbeook, we train the model by running  `python train_d2.py` in the terminal. A personalized script meant to improve the training process is provided in the folder `detr/`.
 
- - ##### Step 4: Edit detr.py to use own num.categories.
- - folder: detr/models/
- - script: detr.py
-        - line 305: comment:
-            - num_classes = 20 if args.dataset_file != "coco" else 91
-        - instead, add:
-            - if args.dataset_file == "arrow":
-                num_classes = 4 + 1    # categories (within the code later on will sum up 1 for N/A cls.)
-
- - ##### Step 4.2: Get pixel mean and pixel STDev from Custom Dataset.
- - folder: arrow_78/data/
- - script: metrics_data.ipynb
-              - Run all cells and check pixel mean and std.
- 
- - Edit arrow.py with proper values:
- - folder: detr/datasets/
- - script: arrow.py
-              - def make_arrow_transforms(image_set):
-                     normalize = T.Compose([
-                            T.ToTensor(),
-                            T.Normalize([ PIXEL MEAN ], [ PIXEL STD ])
-                     ])
- 
-
- - ##### Step 5.0: Run DETR from scratch or OWN pre-trained weights. Good results w. 200 ep.
- - folder: detr/
- - script: train_baseline_DETR.lsf
-        - 1st time:
-            - python main.py --dataset_file "arrow" --coco_path "images/" --lr "1e-5" --epochs "300" 
-        - Resume training with prev. weights:
-            - python main.py --dataset_file "arrow" --coco_path "images/" --lr "1e-5" --epochs "300" --resume "output/checkpoint.pth"
-
- - TIP: * *  Check details per epoch in logs/stdout.out file;Time x epoch -> by f+search = "eta"  * *
-
- - ##### Step 5.1: Run DETR - COCO pre-trained weights: Should get good results w. 10 ep.
- - Download model DETR R50 from: https://github.com/facebookresearch/detr  in: detr/
- - Edit main.py to get same number of categories.
- - Before weights are loaded to model, let's delete nontrained parameters:
- - script: main.py
-        - Under:
-            else:
-                checkpoint = torch.load(args.resume, map_location='cpu')
-
-        -   # HERE
-        -       # NOT HERE
-        -   del checkpoint["model"]["class_embed.weight"]
-            del checkpoint["model"]["class_embed.bias"]
-            del checkpoint["model"]["query_embed.weight"] 
-
-        - One line below, edit:
-            model_without_ddp.load_state_dict(checkpoint['model'])
-        - to:
-            model_without_ddp.load_state_dict(checkpoint['model'], strict=False)
-
-##### Step 6: Check output weights and create plot file - train vs test loss:
- - folder: detr/output/
- - script: plot_results.py
- - terminal: python plot_results.py
- - image: plot.png
-
- - weights in: checkpoint.pth
-
- ##### Step 6.1: Check current training status:
- - folder: "decided logs folder for stdout.out files"
-
- ##### Step Extra: If Dataset format needed -> csv. (not in this project)
- - folder: DatasetsConversion/COCO2csv/
- - script: main.py
-              -     dict = {
-                     '0' : 'molec',
-                     '1': "arrow",
-                     '2': "text",
-                     '3': "plus"
-                                   } 
- - Create train.csv file, to calculate pixel mean and stdev.
- - terminal: python main.py -i images/train/ -img images/train/ -o train.csv
- - terminal: mv train.csv images/
+ - To run inference on the model, we will use the script `inference_D2.py` in the folder `detr/detectron_2/detr/`. This script is meant to run inference on the model and save the output in a JSON file. We can run inferene on our test data, or on our real-world data. I personally recommend to run inference on `vizz_detectron2.ipynb`, as it gives a clear output on all the testing data we have, with also the posibility to sae the inference on real-world data in an folder as .png files.
 
 
-## DETR Custom Dataset Inference:
-##### Step 1: Code test.py file from scratch and run inference.
- - folder: detr/
- - script: attention_DETR.py   # Should be already created in this github. Contact: Mark Martori Lopez if not.
- - terminal: bash < inference_DETR.lsf
- - or
- - python attention_DETR.py
-
-        
-
-
-
-
-
-
-
- 
+ *STILL HAVE TO APPPLY CHANGES TO train_d2.py AND inference_D2.py*
