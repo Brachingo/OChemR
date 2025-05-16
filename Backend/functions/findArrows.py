@@ -193,7 +193,7 @@ def get_arrow_direction(img,img_path,step, debugging = False):
             cv2.circle(copybwimg,startpoint,radius,(255,0,100),1) # LILA
             cv2.circle(copybwimg,endpoint,radius,(100,0,255),1) # ROSA 
             cv2.imwrite("arrows_detected/arr_"+filename,copybwimg)
-
+        
         return startpoint, endpoint
 
     all_corners = {}                                                # If +2 corners detected:
