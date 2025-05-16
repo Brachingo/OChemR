@@ -63,7 +63,7 @@ A DETR model with a ResNet50 backbone is used to detect the objects in the image
 ##### Detections
 <p align="center">
   <a>
-    <img src="github/images/stephacidin-a_1_detection.png" alt="Detected objects with ViT">
+    <img src="github/images/stephacidin-a_1_detection.png" alt="Detected objects with ViT" width=375 height=275>
   </a>
 </p>
 
@@ -76,7 +76,7 @@ We also implement a small validation set of 8k images and a testing set of 2k. A
 ### 3 - OCR
 For Optical Character Recognition (OCR), we used a PaddleOCR model, an open-source tool optimized for extracting text from images. It applies deep learning techniques to detect and recognize text regions, even in complex layouts or low-quality scans. This step was essential for identifying and extracting relevant textual information, such as labels, annotations, or chemical names, from the input documents before structural analysis
 <p align="center">
-  <img src="github/images/paddle_logo.png"  width=500 height=275/>
+  <img src="github/images/paddle_logo.png"  width=300 height=175/>
 </p>
 
 
@@ -84,13 +84,13 @@ For Optical Character Recognition (OCR), we used a PaddleOCR model, an open-sour
 ### 4 - DECIMER AI
 In order to translate molecules from the input images to SMILES strings we used DECIMER AI, an open-source OCSR that uses deep learning to detect, segment, and recognize chemical structures from scientific documents. It turns images of molecules into machine-readable formats, helping extract chemical data from scanned papers and literature.
 <p align="center">
-  <img src="github/images/DECIMER.png"  width=500 height=350/>
+  <img src="github/images/DECIMER.png"  width=400 height=220/>
 </p>
 
 ### 5 - Arrow direction
 The direction of the reaction is detected by using a simple heuristic. The algorithm checks the position of the arrows and the molecules in the image. It uses the coordinates of the bounding boxes to determine the direction of the reaction. The algorithm then assigns a direction to each arrow based on its position relative to the molecules.
 <p align="center">
-  <img src="github/images/arrow_det.png"  width=500 height=350/>
+  <img src="github/images/arrow_det.png"/>
 
 
 ## Output Files
