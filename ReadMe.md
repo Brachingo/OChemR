@@ -41,7 +41,7 @@ From a chemical reaction image, detect and classify molecules, text and arrows b
 
 Input:
 <br>
-<a><img src="github/images/Aspirin.png" alt="Aspirin" width=200 height=200></a>
+<a><img src="github/images/Aspirin.png" alt="Aspirin" width=250 height=200></a>
 <br>
 
 Output:
@@ -56,14 +56,14 @@ A DETR model with a ResNet50 backbone is used to detect the objects in the image
 ##### Input Image
 <p align="center">
   <a>
-    <img src="github/images/stephacidin-a_1.png" alt="Input Image" width=300 height=275>
+    <img src="github/images/stephacidin-a_1.png" alt="Input Image" width=375 height=275>
   </a>
 </p>
 
 ##### Detections
 <p align="center">
   <a>
-    <img src="github/images/stephacidin-a_1_detection.png" alt="Detected objects with ViT" width=300 height=275>
+    <img src="github/images/stephacidin-a_1_detection.png" alt="Detected objects with ViT">
   </a>
 </p>
 
