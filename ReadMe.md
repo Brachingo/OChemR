@@ -90,7 +90,9 @@ In order to translate molecules from the input images to SMILES strings we used 
 ### 5 - Arrow direction
 The direction of the reaction is detected by using a simple heuristic. The algorithm checks the position of the arrows and the molecules in the image. It uses the coordinates of the bounding boxes to determine the direction of the reaction. The algorithm then assigns a direction to each arrow based on its position relative to the molecules.
 <p align="center">
-  <img src="github/images/arrow_det.png"/>
+  <img src="github/images/arr_stephacidin-a_10.png"/>
+  <img src="github/images/arr_stephacidin-a_18.png">
+</p>
 
 
 ## Output Files
