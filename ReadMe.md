@@ -19,7 +19,7 @@
 ##
 <p align="center">
   <a>
-    <img src="github/images/conv.png" alt="Encoder-decoder multi-head attention" width=570 height=240>
+    <img src="github/images/Figure_1-1.png" alt="Workflow for OChemR" width=570 height=440>
   </a>
 </p>
 
