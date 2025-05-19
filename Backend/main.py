@@ -213,33 +213,7 @@ def main(args_detr):
 
     threshold = args_detr.thresh
     model, _, _ = build_model(args_detr) # Get DETR model with current args.
-    # This is used to load model from "purebreed" DETR, we are using a custom with Detectron2
-    """
-    if args_detr.resume: # Load weights.
-        checkpoint = torch.load(args_detr.resume, map_location='cpu', weights_only=False)
-        model.load_state_dict(checkpoint['model'])
-    model.to(device_detr)
-    """
-    # Trying to load weights from DETR-Detectron2
-    """
-    if args_detr.resume:
-        # 1. Load the checkpoint in CPU
-        checkpoint = torch.load(args_detr.resume, map_location='cpu')
-        sd = checkpoint['model']  # Original state_dict
-
-        # 2. Remove prefix "detr." from all keys
-        new_sd = {}
-        for k, v in sd.items():
-            if k.startswith('detr.'):
-                new_sd[k[len('detr.'):]] = v
-            else:
-                new_sd[k] = v
-
-        # 3. Load model with strict=False
-        model.load_state_dict(new_sd, strict=False)
     
-    model.to(device_detr)
-    """
     # Print my current path
     print(f"Current path for model loading = {os.getcwd()}")
     

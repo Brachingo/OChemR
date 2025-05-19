@@ -63,13 +63,13 @@
  - TRAIN:
  - script: run.lsf
         - --path location where train images are. ex: ../../images/train2017/
-        - --output json_annotation.json
+        - --output custom_train.json
  - terminal: bash < run.lsf
 
  - VAL:
  - script: runval.lsf
         - --path location where validation images are. ex: ../../images/val2017/
-        - --output json_annotval.json
+        - --output custom_val.json
  - terminal: bash < runval.lsf
 
  - TEST:
@@ -96,3 +96,5 @@
 
 
  *STILL HAVE TO APPPLY CHANGES TO train_d2.py AND inference_D2.py*
+
+ 
