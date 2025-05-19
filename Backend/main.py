@@ -25,9 +25,10 @@ from Backend.functions.detr_inference import detr_inference
 from detr.detr.models import build_model
 print("Imports done for DETR inference.")
 # OCR - Get text from detected Text bboxes from ViT.
-import easyocr
+
 from paddleocr import PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True, lang="en")  # Initialize PaddleOCR
+
 print("Imports done for OCR inference.")
 
 # Molvec - Translate Molecules to SMILES
@@ -282,14 +283,13 @@ def main(args_detr):
 
                 arrowname = "arrows/"+filename.replace(".",str(step)+".")
                 cv2.imwrite(arrowname,new_img)
-
+                
             elif label == 2:                                   # Text - OCR - PADDLEOCR
                 textname = "text_images/"+filename.replace(".",str(step)+".")
                 cv2.imwrite(textname,new_img)
                 # PaddleOCR
                 # PaddleOCR
-                result = ocr.ocr(textname, cls=True)
-
+                result = ocr.ocr(textname, cls=True)                
                 # Extract text from PaddleOCR result
                 extracted_text = []
                 for line in result:
@@ -344,7 +344,18 @@ def main(args_detr):
                                                 "prev_mol":prevmol, # Create Arrow structure in main dictionary.
                                                 "text"    :textinf, # Add text of current process/arrow.
                                                 "post_mol":postmol  # Molecule to which the arrow points.
-                                                } 
+                                                }
+                # Save the outputs in a dictionary.
+                dict = {
+                    "Arrow ID": key,
+                    "Previous Molecule": prevmol,
+                    "Text": textinf,
+                    "Post Molecule": postmol
+                }
+                # Print the dictionary into a JSON File
+                with open(args_detr.output_dir+filename.replace(".png", ".json"), "a") as f:
+                    json.dump(dict, f, indent=4)
+                    
                 if debugging:
                     print(f"For arrow = {key}:\n")
                     print(f"Prev mol = {prevmol}")
@@ -352,9 +363,10 @@ def main(args_detr):
                     print(f"Post mol = {postmol}")
                 
         final_ordered_reaction, SMILESresult = orderArrows(unorderedReaction)    # Order unordered dictionary.
+        print(f"Unordered reaction = {unorderedReaction}")
         print(f"Final ordered reaction = {final_ordered_reaction}")
         if final_ordered_reaction:
-            storeResults(final_ordered_reaction, filename, args_detr.output_dir) # Store results as Json
+            #storeResults(final_ordered_reaction, filename, args_detr.output_dir) # Store results as Json
 
             with open(args_detr.output_dir+"smiles.txt","a") as f:
                 f.write(f"Filename = {filename}\nSMILES = {SMILESresult[0:-2]}\n\n")

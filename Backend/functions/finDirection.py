@@ -244,6 +244,7 @@ def orderArrows(unorderedReaction, debugging = False):
 
     return orderedReaction, SMILESreaction
     
+
 #
 # ---------------   DATA TO PLAY WITH ABOVE FUNCTIONS -------------
 #
