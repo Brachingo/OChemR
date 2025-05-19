@@ -340,10 +340,11 @@ def main(args_detr):
                 if len(middle) > 0:
                     for a in middle: textinf.append(a)
                 textinf = [SMILES_dict[txt] for txt in textinf]
-                unorderedReaction["arrow"+str(key)] = {"prev_mol":prevmol, # Create Arrow structure in main dictionary.
+                unorderedReaction["arrow"+str(key)] = {
+                                                "prev_mol":prevmol, # Create Arrow structure in main dictionary.
                                                 "text"    :textinf, # Add text of current process/arrow.
-                                                "post_mol":postmol} # Molecule to which the arrow points.
-
+                                                "post_mol":postmol  # Molecule to which the arrow points.
+                                                } 
                 if debugging:
                     print(f"For arrow = {key}:\n")
                     print(f"Prev mol = {prevmol}")
@@ -351,6 +352,7 @@ def main(args_detr):
                     print(f"Post mol = {postmol}")
                 
         final_ordered_reaction, SMILESresult = orderArrows(unorderedReaction)    # Order unordered dictionary.
+        print(f"Final ordered reaction = {final_ordered_reaction}")
         if final_ordered_reaction:
             storeResults(final_ordered_reaction, filename, args_detr.output_dir) # Store results as Json
 

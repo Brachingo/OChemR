@@ -5,4 +5,4 @@
 
 # LET'S TRY:
 
-python main.py --data_path images/ --output_dir output/ --resume ../detr/detectron_2/detr/outputs_4/model_final.pth --num_classes 4 --debugging True
+python main.py --data_path images_2/ --output_dir output/ --resume ../detr/detectron_2/detr/outputs_4/model_final.pth --num_classes 4 --debugging True

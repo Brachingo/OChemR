@@ -166,7 +166,7 @@ def get_arrow_direction(img,img_path,step, debugging = False):
     gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)                   
     corners = cv2.goodFeaturesToTrack(gray,270,0.1,10)              # Detect corners on gray, gaussian image.
     corners = np.int0(corners)
-
+    
     # Set threshold to facilitate finding lines from corners        # Apply threshold to original image...
     ret,bwimg = cv2.threshold(img,220,254,0) #235                   #...to remove gray values surroinding the arrow.
     ret2,copybwimg = cv2.threshold(img,220,254,0)                   # DEBUGGING
