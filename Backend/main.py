@@ -294,7 +294,10 @@ def main(args_detr):
                 # Extract text from PaddleOCR result
                 extracted_text = []
                 for line in result:
-                    for word_info in line:
+                    #Skip this part when you get error TypeError: 'NoneType' object is not iterable
+                    if line is None:
+                        continue
+                    for word_info in line:                        
                         extracted_text.append(word_info[1][0])  # word_info[1][0] contains detected text
                         
                 try:
