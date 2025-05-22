@@ -38,6 +38,7 @@ import cv2
 # Read Direction of images
 from Backend.functions.findArrows import get_arrow_direction
 from Backend.functions.finDirection import findClosestType,groupMolecules,orderArrows
+from Backend.functions.order_annot_reaction import Order_Reaction, Annotate_Reaction
 import json
 print("Imports done for direction inference.")
 # Output
@@ -346,6 +347,7 @@ def main(args_detr):
                                                 "post_mol":postmol  # Molecule to which the arrow points.
                                                 }
                 # Save the outputs in a dictionary.
+                """
                 dict = {
                     "Arrow ID": key,
                     "Previous Molecule": prevmol,
@@ -355,21 +357,28 @@ def main(args_detr):
                 # Print the dictionary into a JSON File
                 with open(args_detr.output_dir+filename.replace(".png", ".json"), "a") as f:
                     json.dump(dict, f, indent=4)
+                """
                     
                 if debugging:
                     print(f"For arrow = {key}:\n")
                     print(f"Prev mol = {prevmol}")
                     print(f"Middle text = {textinf}")
                     print(f"Post mol = {postmol}")
+                    
+        final_ordered_reaction = Order_Reaction(unorderedReaction)
+        
+        # Annotate reaction with the correct information.
+        Annotate_Reaction(final_ordered_reaction, args_detr.output_dir, filename)
+        
                 
-        final_ordered_reaction, SMILESresult = orderArrows(unorderedReaction)    # Order unordered dictionary.
-        print(f"Unordered reaction = {unorderedReaction}")
-        print(f"Final ordered reaction = {final_ordered_reaction}")
-        if final_ordered_reaction:
+        #final_ordered_reaction, SMILESresult = orderArrows(unorderedReaction)    # Order unordered dictionary.
+        #print(f"Unordered reaction = {unorderedReaction}")
+        #print(f"Final ordered reaction = {final_ordered_reaction}")
+        #if final_ordered_reaction:
             #storeResults(final_ordered_reaction, filename, args_detr.output_dir) # Store results as Json
 
-            with open(args_detr.output_dir+"smiles.txt","a") as f:
-                f.write(f"Filename = {filename}\nSMILES = {SMILESresult[0:-2]}\n\n")
+        #    with open(args_detr.output_dir+"smiles.txt","a") as f:
+        #        f.write(f"Filename = {filename}\nSMILES = {SMILESresult[0:-2]}\n\n")
         timefin = time.time()
         if debugging:
             print(f"Total time to translate, find direction and assemble = {abs(timefin - timest)}s.")

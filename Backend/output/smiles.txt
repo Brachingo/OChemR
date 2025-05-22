@@ -1,6 +1,0 @@
-Filename = test29.png
-SMILES = CCCC#[N+]CCC[Al@@](CC(C)C)(CC(C)C)I>>CCCC#[N+][B-](CC(C)C)(CC(C)C)CC(C)C
-
-Filename = stephacidin-a_1.png
-SMILES = C=CC(C)(C)C1=C(C[C@@H]2C(=O)N3CCC=C3C(=N2)OC)C4=C(C5=C(C=C4)OC(C)(C)C=C5)N1>>C=CC(C)(C)C1=C(CC2=NC(=C3CCCN3C2=O)OC)C4=C(C5=C(C=C4)OC(C)(C)C=C5)N1
-
