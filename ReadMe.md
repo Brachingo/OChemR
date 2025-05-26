@@ -101,20 +101,23 @@ A randomly selected small sample of the test set is evaluated under the folders 
 Aggregating the aforementioned steps outcome, we can reconstruct JSON and text files.
 ```json
 {
-    "arrow11": {
-        "prev_mol": "CCCC#N.CCCC[Al](CC(C)C)CC(C)C",
-        "text": ["-duction of nit-ile", "Coordination of nitrog- pair to the ilum-"],
-        "post_mol": "CCCC#[N+3]1(CCC)C(C)(C)C[AlH2]1(O)CC(C)C"
+    "arrow4": {
+        "prev_mol": "CC(=O)CC1=C(C)C(=O)C(=O)C(=C1OC)C",
+        "text": [
+            [
+                "HFaq"
+            ]
+        ],
+        "post_mol": "CC([2H])C1(C(=C(C(=O)C(=C1CC(=O)C)C)O)C)O"
     },
-    "arrow5": {
-        "prev_mol": "CCCC#[N+3]1(CCC)C(C)(C)C[AlH2]1(O)CC(C)C",
-        "text": ["Delivery of hyd-ide to the nitr-- carbon"],
-        "post_mol": "CCC/C=N/[Al](CC(C)C)CC(C)C"
-    },
-    "arrow7": {
-        "prev_mol": "CCC/C=N/[Al](CC(C)C)CC(C)C",
-        "text": ["H20","Formation o"],
-        "post_mol": "CCCC=O"
+    "arrow6": {
+        "prev_mol": "CC([2H])C1(C(=C(C(=O)C(=C1CC(=O)C)C)O)C)O",
+        "text": [
+            [
+                "-MeOH"
+            ]
+        ],
+        "post_mol": "CC(=O)CC1=C(C)C(=O)C(=O)C(=C1O)C"
     }
 }
 ```
