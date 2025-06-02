@@ -101,23 +101,25 @@ A randomly selected small sample of the test set is evaluated under the folders 
 Aggregating the aforementioned steps outcome, we can reconstruct JSON and text files.
 ```json
 {
-    "arrow4": {
-        "prev_mol": "CC(=O)CC1=C(C)C(=O)C(=O)C(=C1OC)C",
+    "arrow0": {
+        "prev_mol": "C=CC(C)(C)C1=C(C[C@@H]2C(=O)N3CCC=C3C(=N2)OC)C4=C(C5=C(C=C4)OC(C)(C)C=C5)N1",
         "text": [
             [
-                "HFaq"
+                "20%aq","KOH"
+                "MeOH"
             ]
         ],
-        "post_mol": "CC([2H])C1(C(=C(C(=O)C(=C1CC(=O)C)C)O)C)O"
+        "post_mol": "C=CC(C)(C)C1=C(CC2=NC(=C3CCCN3C2=O)OC)C4=C(C5=C(C=C4)OC(C)(C)C=C5)N1"
     },
-    "arrow6": {
-        "prev_mol": "CC([2H])C1(C(=C(C(=O)C(=C1CC(=O)C)C)O)C)O",
+    "arrow8": {
+        "prev_mol": "C=CC(C)(C)C1=C(CC2=NC(=C3CCCN3C2=O)OC)C4=C(C5=C(C=C4)OC(C)(C)C=C5)N1",
         "text": [
             [
-                "-MeOH"
+                "86%2.4:1 d.r.",
+                "i. HCI96%"
             ]
         ],
-        "post_mol": "CC(=O)CC1=C(C)C(=O)C(=O)C(=C1O)C"
+        "post_mol": "CC1(C)C=CC2=C(C=CC3=C2NC4=C3C[C@]56[C@@H](C[C@@]7(C[C@@H]8C[C@@]7(C(=O)N5)NC8=O)C(=O)N6)C4(C)C)O1"
     }
 }
 ```
