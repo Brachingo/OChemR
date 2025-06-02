@@ -84,17 +84,8 @@
  - folder: DatasetConversion/_Yolo2COCO/output/
         - terminal: mv json* "path to images/annotations/ folder"
 
-## DETR Custom Dataset Training:
- - ##### Step 0: Clone DETR: 
- - terminal: git clone https://github.com/woctezuma/finetune-detr.git
 
- In order to get a better training than the one in the original repo, we will modify some files.
-
- - To train the model on previous weights, we have to follow the steps from the original repo. But instead of training the model in the Jupyter Notbeook, we train the model by running  `python train_d2.py` in the terminal. A personalized script meant to improve the training process is provided in the folder `detr/`.
-
- - To run inference on the model, we will use the script `inference_D2.py` in the folder `detr/detectron_2/detr/`. This script is meant to run inference on the model and save the output in a JSON file. We can run inferene on our test data, or on our real-world data. I personally recommend to run inference on `vizz_detectron2.ipynb`, as it gives a clear output on all the testing data we have, with also the posibility to sae the inference on real-world data in an folder as .png files.
-
-
- *STILL HAVE TO APPPLY CHANGES TO train_d2.py AND inference_D2.py*
-
+ONCE ALL OF THESE STEPS ARE DONE, MEANS WE HAVE FINISHED CREATING THE SYNTHETIC DATASET.
+       Then we can procced to train the DETR model.
+       To do so, we move to folder /detr/. There we can find a README.md file with instructions on how to train the model.
  
