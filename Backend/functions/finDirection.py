@@ -118,10 +118,32 @@ def splitMolecfromText(mindistances, otherpoint, bbox_dict,threshold):
     return opposite_further, mid_closest                                # Return index of molecule that is closer to current edge, but further to opposite edge of arrow.
 
 
-def findClosestType(sp,ep, bbox_dict,labels, arrowidx, typeobj = 0, threshold = 30, debugging = False):
-    """                     mol_middle or text
-    [mol_before] :-∞-∞- sp---current_arrowidx--->ep -∞-∞-: [mol_after]
 
+def point_to_line_distance(point, line_start, line_end):
+    """Calculate minimum distance between point and line segment"""
+    # Vector math implementation
+    line_vec = [line_end[0]-line_start[0], line_end[1]-line_start[1]]
+    point_vec = [point[0]-line_start[0], point[1]-line_start[1]]
+    
+    line_length = (line_vec[0]**2 + line_vec[1]**2)**0.5
+    if line_length == 0:
+        return ((point[0]-line_start[0])**2 + 
+                (point[1]-line_start[1])**2)**0.5
+    
+    t = max(0, min(1, (point_vec[0]*line_vec[0] + 
+                       point_vec[1]*line_vec[1]) / line_length**2))
+    
+    projection = [line_start[0] + t*line_vec[0], 
+                  line_start[1] + t*line_vec[1]]
+    
+    return ((point[0]-projection[0])**2 + 
+            (point[1]-projection[1])**2)**0.5
+    
+
+def findClosestType(sp,ep, bbox_dict,labels, arrowidx, typeobj = 0, threshold = 40, debugging = False):
+    """ mol_middle or text
+    [mol_before] :-∞-∞- sp---current_arrowidx--->ep -∞-∞-: [mol_after]
+    
     Finds closest typeobjects [molecules or text] to current arrow.
 
     INPUTS:
@@ -136,6 +158,7 @@ def findClosestType(sp,ep, bbox_dict,labels, arrowidx, typeobj = 0, threshold = 
         mid_closest  : int -> index of objects found in the middle of the arrow / process.
         post_closest : int -> index of MOLECULE to which the arrow points. if typeobj = 2, then set to none.
     """
+
     prev_mindistances = {}
     post_mindistances = {}
     # Get start and end arrow points:
@@ -181,22 +204,118 @@ def findClosestType(sp,ep, bbox_dict,labels, arrowidx, typeobj = 0, threshold = 
             # If mol detected as "above molecule" is also a pointing arrow, do not take it.
             mid_closest = [mol for mol in mid_closest if (str(mol) != str(prev_closest) and str(mol) != str(post_closest))]
             mid_closest = set(mid_closest)
+    # else:                                                       # if we process text, we want all text closer than threshold
+    #     prev_closest = None
+    #     post_closest = None
+    #     for k in prev_mindistances:
+    #         if prev_mindistances[k] < threshold:
+    #             mid_closest.append(k)
+    #     for k in post_mindistances:
+    #         if post_mindistances[k] < threshold:
+    #             mid_closest.append(k)
 
-    else:                                                               # if we process text, we want all text closer than threshold
+    
+    else:  # if we process text
         prev_closest = None
         post_closest = None
-        for k in prev_mindistances:
-            if prev_mindistances[k] < threshold:
-                mid_closest.append(k)
-        for k in post_mindistances:
-            if post_mindistances[k] < threshold:
-                mid_closest.append(k)
-
+        arrow_vector = (ep[0]-sp[0], ep[1]-sp[1])
+        arrow_length = (arrow_vector[0]**2 + arrow_vector[1]**2)**0.5
+        
+        for it, key in enumerate(bbox_dict):
+            if labels[key] == typeobj:
+                currentbbox = Bbox(bbox_dict[key])
+                center = currentbbox.centeredPoint()  # Get center point of bbox
+                
+                # Check distance from arrow line
+                line_dist = point_to_line_distance(center, sp, ep)
+                
+                # Also check if it's within the arrow's length range
+                projection = ((center[0]-sp[0])*arrow_vector[0] + (center[1]-sp[1])*arrow_vector[1]) / arrow_length
+                along_arrow = 0 <= projection <= arrow_length
+                
+                if line_dist < threshold and along_arrow:
+                    mid_closest.append(it)
+    
         mid_closest = set(mid_closest)
     
     return [prev_closest,mid_closest,post_closest]
 
 
+
+
+"""
+def findClosestType(sp, ep, bbox_dict, labels, arrowidx, typeobj=0, threshold=70, 
+                   debug=False, img_width=None):
+    Enhanced version with better text-arrow association
+    # Convert arrow points to absolute coordinates
+    sp_abs = [sp[0] + bbox_dict[arrowidx][0], 
+              sp[1] + bbox_dict[arrowidx][1]]
+    ep_abs = [ep[0] + bbox_dict[arrowidx][0], 
+              ep[1] + bbox_dict[arrowidx][1]]
+    
+    # Calculate arrow vector properties
+    arrow_vector = [ep_abs[0] - sp_abs[0], ep_abs[1] - sp_abs[1]]
+    arrow_length = max(1, (arrow_vector[0]**2 + arrow_vector[1]**2)**0.5)
+    
+    # Dynamic threshold based on arrow length
+    dynamic_thresh = max(threshold, arrow_length * 0.3)  # 30% of arrow length
+    
+    prev_candidates = []
+    post_candidates = []
+    mid_candidates = []
+    
+    for idx, bbox in bbox_dict.items():
+        if labels[idx] != typeobj:
+            continue
+            
+        bbox_obj = Bbox(bbox)
+        center = bbox_obj.midPoints()[0]  # Use primary midpoint
+        
+        # 1. Distance to arrow line (not just endpoints)
+        dist_to_line = point_to_line_distance(center, sp_abs, ep_abs)
+        
+        # 2. Projection along arrow vector
+        projection = ((center[0]-sp_abs[0])*arrow_vector[0] + 
+                     (center[1]-sp_abs[1])*arrow_vector[1]) / arrow_length
+        
+        # 3. Relative position scoring
+        if projection < -0.2*arrow_length:  # Behind arrow start
+            score = 1.0 - (dist_to_line / dynamic_thresh)
+            prev_candidates.append((idx, score))
+            
+        elif projection > 1.2*arrow_length:  # Beyond arrow end
+            score = 1.0 - (dist_to_line / dynamic_thresh)
+            post_candidates.append((idx, score))
+            
+        else:  # Along arrow body
+            # Higher weight for centered text
+            centerness = 1.0 - (abs(projection/arrow_length - 0.5)/0.5)
+            score = (0.7 * (1.0 - dist_to_line/dynamic_thresh) + 
+                    0.3 * centerness)
+            mid_candidates.append((idx, score))
+    
+    # Select best candidates
+    def get_best(candidates):
+        if not candidates:
+            return None
+        return max(candidates, key=lambda x: x[1])[0]
+    
+    prev_closest = get_best(prev_candidates) if typeobj == 0 else None
+    post_closest = get_best(post_candidates) if typeobj == 0 else None
+    
+    # Filter mid candidates by score threshold
+    mid_closest = [idx for idx, score in mid_candidates 
+                  if score > 0.5] if typeobj == 2 else []
+    
+    if debug:
+        print(f"Arrow {arrowidx} ({typeobj=}):")
+        print(f"  Prev: {prev_closest} from {prev_candidates}")
+        print(f"  Post: {post_closest} from {post_candidates}")
+        print(f"  Mid: {mid_closest} from {mid_candidates}")
+    
+    return [prev_closest, mid_closest, post_closest]
+    
+"""
 def orderArrows(unorderedReaction, debugging = False):
     """
     Restructure dictionary to follow reactions direction.

@@ -114,7 +114,7 @@ def get_args_parser():
 
     parser.add_argument('--device_detr', default='cpu',
                         help='device to use for training / testing')
-    parser.add_argument('--resume', default = 'detr/output/checkpoint.pth', help='Get model weights from checkpoint')
+    parser.add_argument('--resume', default = '../detr/detr/outputs_150e/checkpoint.pth', help='Get model weights from checkpoint')
 
     parser.add_argument('--thresh', default=0.98, type=float)
     #### ----- End ViT. ---------------
@@ -174,14 +174,14 @@ def main(args_detr):
     threshold = args_detr.thresh
     model, _, _ = build_model(args_detr) # Get DETR model with current args.
     # This is used to load model from "purebreed" DETR, we are using a custom with Detectron2
-    """
+    
     if args_detr.resume: # Load weights.
         checkpoint = torch.load(args_detr.resume, map_location='cpu', weights_only=False)
         model.load_state_dict(checkpoint['model'])
     model.to(device_detr)
-    """
+    
     # Trying to load weights from DETR-Detectron2
-    """
+    
     if args_detr.resume:
         # 1. Load the checkpoint in CPU
         checkpoint = torch.load(args_detr.resume, map_location='cpu')
@@ -199,7 +199,7 @@ def main(args_detr):
         model.load_state_dict(new_sd, strict=False)
     
     model.to(device_detr)
-    """
+    
     # Load model weights from model_final.pth
     
         

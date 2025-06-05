@@ -10,7 +10,7 @@ import numpy as np
 ocr = PaddleOCR(use_angle_cls=True, lang='en')  # Set use_gpu=False if GPU is not available
 
 # Path to the image
-img_path = '../images/stephacidin-a_1.png'
+img_path = '../images/Englerin-A_3.png'
 img = cv2.imread(img_path)
 
 # Run the OCR
