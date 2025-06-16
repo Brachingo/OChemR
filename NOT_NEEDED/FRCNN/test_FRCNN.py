@@ -19,7 +19,7 @@ from detectron2.utils.visualizer import ColorMode
 
 #register_coco_instances("my_dataset_test", {}, "../images/json_annotest.json", "../images/test/")
 # Try on new (Real World) images:
-register_coco_instances("my_dataset_test", {}, "../real_data/json_annotreal.json", "../real_data/real")
+register_coco_instances("my_dataset_test", {}, "../../real_data/json_annotreal.json", "../../real_data/real")
 
 ## Prepare Config File:
 cfg = get_cfg()
@@ -57,7 +57,7 @@ CLASSES = [
 
 ## ----------------- Run Test: Get inference time.
 threshold = 0.95
-tested_images = ['../real_data/real/*png'] # 'images/val/*png'
+tested_images = ['../../real_data/real/*png'] # 'images/val/*png'
 for paths in tested_images:
     for it,imageName in enumerate(glob.glob(paths)):
         filename = os.path.basename(imageName)

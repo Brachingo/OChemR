@@ -227,7 +227,7 @@ def main(args_detr):
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5 # Set threshold for this model
     cfg.DATASETS.TRAIN = ("custom_train",)
     cfg.DATASETS.TEST = ("custom_val",)
-    cfg.MODEL.WEIGHTS = '../detr/detectron_2/detr/outputs_5/model_final.pth' # Set path model .pth
+    cfg.MODEL.WEIGHTS = '../detr/detectron_2/detr/outputs_5_good/model_final.pth' # Set path model .pth
     cfg.MODEL.DETR.NUM_CLASSES = 4
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.95 # Confidence threshold for this model

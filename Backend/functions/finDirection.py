@@ -52,7 +52,7 @@ def groupMolecules(bbox_dict,SMILES_dict, labels):
     symbolbbox = Bbox(bbox_dict[idx])                                   # if found, get its coords.
     centeredPoint = symbolbbox.centeredPoint()                          # Get centered point of + symbol.
     mindistances = {}
-    threshold = 20                                                      # Molecules further than 20pxls not taken into account.
+    threshold = 40                                                      # Molecules further than 20pxls not taken into account.
     for it,bbox in enumerate(list(bbox_dict.values())):                 # check each bbox
         if labels[it] != 0:                                             # if its a molecule
             continue
@@ -220,7 +220,12 @@ def findClosestType(sp,ep, bbox_dict,labels, arrowidx, typeobj = 0, threshold = 
         post_closest = None
         arrow_vector = (ep[0]-sp[0], ep[1]-sp[1])
         arrow_length = (arrow_vector[0]**2 + arrow_vector[1]**2)**0.5
-        
+        """
+        This section describes a computational method for detecting arrow direction in chemical reaction diagrams and annotating reactants, products, and 
+        intermediate text labels. The approach combines image preprocessing, corner detection, and distance-based association with bounding boxes to build an 
+        ordered representation of the reaction.
+        """
+
         for it, key in enumerate(bbox_dict):
             if labels[key] == typeobj:
                 currentbbox = Bbox(bbox_dict[key])
@@ -262,7 +267,11 @@ def findClosestType(sp, ep, bbox_dict, labels, arrowidx, typeobj=0, threshold=70
     
     prev_candidates = []
     post_candidates = []
-    mid_candidates = []
+    mid_candidaThis section describes a computational method for detecting arrow direction in chemical reaction diagrams and annotating reactants, products, 
+    and intermediate text labels. The approach combines image preprocessing, corner detection, and distance-based association with bounding boxes to build an 
+    ordered representation of the reaction.
+
+tes = []
     
     for idx, bbox in bbox_dict.items():
         if labels[idx] != typeobj:
@@ -372,12 +381,19 @@ def orderArrows(unorderedReaction, debugging = False):
 # 0: [(16, 106), (77, 20)], 
 # 1: [''], 
 # 2: [''], 
-# 3: 'C=C1CC2(C#N)C3(C)CC1C1CCNC12CC1=C3Cc2ccc(C)c(-c3c([O-])ccc4[nH]c5c(c34)CC3C[C@H]4C5(C)CC(C)([C@@H](C)CCO)C34CC3CC3)c21', 4: [''], 5: 'molecule5', 6: 'C=Cc1ccc2[nH]cc(C[C@H](N)C(=O)OF)c2c1', 7: [''], 8: 'molecule8', 9: [(151, 14), (4, 14)], 10: ['--:-nun-FoUr5--o'], 11: ['-à--------nrMHCFIF'], 12: ['-)-LL-I.CoOK-co-work-.org.-Chem.:'], 13: 'BCc1ccc2[nH]c3c(c2c1-c1c(O)ccc(C)c1C1=C(C)C2CC4/C(=C\\C)CN2C(C1)C4CC)CC1C(CC)C24CC3N1[C@@H]2/C4=C/C.C.CC=O.CC=O', 14: [(60, 9), (114, 98)], 15: 'C/C=C(\\C)CN1C2CCC(=O)[C@]1(C)Cc1c2[nH]c2ccc(C)cc12.O', 16: [''], 17: [(4, 14), (154, 14)], 18: [''], 19: [(9, 12), (53, 13)], 20: [''], 21: ['-:n-'], 22: [''], 23: ['-----DDI3,2,-78°oCtorV112912,-viel,YIIYIXX-4--thenMeOH,r.t,20']}
+# 3: 'C=C1CC2(C#N)C3(C)CC1C1CCNC12CC1=C3Cc2ccc(C)c(-c3c([O-])ccc4[nH]c5c(c34)CC3C[C@H]4C5(C)CC(C)([C@@H](C)CCO)C34CC3CC3)c21', 4: [''], 
+# 5: 'molecule5', 6: 'C=Cc1ccc2[nH]cc(C[C@H](N)C(=O)OF)c2c1', 7: [''], 8: 'molecule8', 9: [(151, 14), (4, 14)], 10: ['--:-nun-FoUr5--o'], 11: ['-à--------nrMHCFIF'], 
+# 12: ['-)-LL-I.CoOK-co-work-.org.-Chem.:'], 13: 'BCc1ccc2[nH]c3c(c2c1-c1c(O)ccc(C)c1C1=C(C)C2CC4/C(=C\\C)CN2C(C1)C4CC)CC1C(CC)C24CC3N1[C@@H]2/C4=C/C.C.CC=O.CC=O', 
+# 14: [(60, 9), (114, 98)], 15: 'C/C=C(\\C)CN1C2CCC(=O)[C@]1(C)Cc1c2[nH]c2ccc(C)cc12.O', 16: [''], 17: [(4, 14), (154, 14)], 18: [''], 19: [(9, 12), (53, 13)], 20: [''],
+# 21: ['-:n-'], 22: [''], 23: ['-----DDI3,2,-78°oCtorV112912,-viel,YIIYIXX-4--thenMeOH,r.t,20']}
 
 
 # bbox_dict ={
 #     0: [75, 202, 156, 319], 
-#     1: [356, 107, 386, 123], 2: [0, 6, 23, 21], 3: [412, 309, 596, 521], 4: [457, 510, 558, 525], 5: [153, 156, 311, 314], 6: [3, 10, 145, 99], 7: [187, 26, 227, 40], 8: [496, 156, 639, 280], 9: [341, 209, 486, 224], 10: [465, 11, 569, 46], 11: [351, 177, 483, 205], 12: [138, 61, 287, 104], 13: [6, 306, 193, 517], 14: [466, 47, 573, 149], 15: [285, 0, 446, 106], 16: [494, 72, 535, 89], 17: [225, 409, 384, 425], 18: [284, 430, 309, 443], 19: [184, 43, 236, 57], 20: [404, 233, 431, 246], 21: [247, 292, 403, 316], 22: [46, 255, 72, 268], 23: [226, 371, 373, 409]} # new molecule above arrow fast.
+#     1: [356, 107, 386, 123], 2: [0, 6, 23, 21], 3: [412, 309, 596, 521], 4: [457, 510, 558, 525], 5: [153, 156, 311, 314], 6: [3, 10, 145, 99], 
+# 7: [187, 26, 227, 40], 8: [496, 156, 639, 280], 9: [341, 209, 486, 224], 10: [465, 11, 569, 46], 11: [351, 177, 483, 205], 12: [138, 61, 287, 104],
+# 13: [6, 306, 193, 517], 14: [466, 47, 573, 149], 15: [285, 0, 446, 106], 16: [494, 72, 535, 89], 17: [225, 409, 384, 425], 18: [284, 430, 309, 443], 
+# 19: [184, 43, 236, 57], 20: [404, 233, 431, 246], 21: [247, 292, 403, 316], 22: [46, 255, 72, 268], 23: [226, 371, 373, 409]} # new molecule above arrow fast.
 
 
 # for key in bbox_dict: 

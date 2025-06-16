@@ -20,11 +20,7 @@ def Order_Reaction(data):
                 key=lambda pair: int(pair[0].replace('arrow',''))
                 )
             )
-    keys = list(ordered.keys())
-    for i in range(1, len(keys)):
-        prev_key = keys[i - 1]
-        curr_key = keys[i]
-        ordered[curr_key]['prev_mol'] = ordered[prev_key]['post_mol']
+
         
     return ordered
 

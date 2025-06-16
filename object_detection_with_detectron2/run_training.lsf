@@ -1,0 +1,3 @@
+python training.py --outdir out_test/ --arch detr --config configs/detr_256_6_6_torchvision.yaml --weight pretrained_model/converted_model.pth --epochs 35000
+
+
