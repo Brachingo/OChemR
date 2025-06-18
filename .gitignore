@@ -196,6 +196,11 @@ Figures/
 !github/images/
 FRCNN/results/
 
+!Backend/output/
+
+object_detection_with_detectron2/
+MarvinJS_Reactions/
+real_data/
 detr/detectron_2/detr/outputs/
 detr/detectron_2/detr/outputs_2/
 detr/detectron_2/detr/outputs_3/

@@ -162,14 +162,18 @@ def get_arrow_direction(img,img_path,step, debugging = False):
     img[0:he,wi:wi-3,:] == [255,255,255]
 
     # Apply filters to make corners easier to detect:
-    image = cv2.GaussianBlur(img, (11,11), 0)                       # Hihglight corners.
-    gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)                   
-    corners = cv2.goodFeaturesToTrack(gray,270,0.1,10)              # Detect corners on gray, gaussian image.
+    image = cv2.GaussianBlur(img, (11,11), 0)                       # Hihglight corners. and save the image for debugging.
+    if debugging:
+        cv2.imwrite("arrows_detected/blurred_"+filename,image)      # Save blurred image for debugging.
+    gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)              
+    corners = cv2.goodFeaturesToTrack(gray,270,0.1,10)              # Detect corners on gray, gaussian image. And save the image for debugging.          # Save gray image for debugging.
     corners = np.int0(corners)
     
     # Set threshold to facilitate finding lines from corners        # Apply threshold to original image...
     ret,bwimg = cv2.threshold(img,220,254,0) #235                   #...to remove gray values surroinding the arrow.
     ret2,copybwimg = cv2.threshold(img,220,254,0)                   # DEBUGGING
+    if debugging:
+        cv2.imwrite("arrows_detected/bw_"+filename,bwimg)          # Save bw image for debugging.
 
     if len(corners) < 3:                                            # If no corners found or less than 3:
         if len(corners) < 2:
@@ -192,7 +196,7 @@ def get_arrow_direction(img,img_path,step, debugging = False):
         if debugging:
             cv2.circle(copybwimg,startpoint,radius,(255,0,100),1) # LILA
             cv2.circle(copybwimg,endpoint,radius,(100,0,255),1) # ROSA 
-            cv2.imwrite("arrows_detected/arr_"+filename,copybwimg)
+            cv2.imwrite("arrows_detected/res_"+filename,copybwimg)
         
         return startpoint, endpoint
 

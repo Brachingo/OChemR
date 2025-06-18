@@ -3,26 +3,30 @@
 ## Generate Training data set
 ### Target Structure:
 - images/
-    - custom_train.json     # JSONs for DETR training.
-    - custom_val.json       #
-    - json_annotest.json    #
     - train2017/
     - val2017/
     - test2017/
     - labelled_train2017/
+    - annotations/
+        - custom_train.json
+        - custom_val.json
+        - json_annotest.json
     
 #### Step 1: Set proper paths:
- - folder: arrow_78
+ - folder: arrow_78/
  - script : params.json
+
         - train_path = "location where train images will be" ex: ../images/train2017/
+
         - labelled_path = "location where train images will be" ex: ../images/labelled2017/
 
 
-
-#### Step 2: Set proper params: - generate 60k images. Check: info_params.py for more inf.
- - folder: arrowDS/params/
+##### Step 2: Set proper params: - generate 60k images. Check: info_params.py for more inf.
+ - folder: arrow_78/params/
  - script: params.json
-        -   {
+ ```json
+
+           {
             "dataset_params": { 
                 "train_path" : "<train_path>",
                     "labelled_path" : "<labelled_path>",
@@ -34,6 +38,8 @@
                 "num_reactions_per_epoch" : 10000,
                 "epochs" : 6}
             }
+```
+
  - By running 10000 reactions per epoch, we will get 60k images in 6 epochs.
  - For validation set, we will use 15% of the training set (1500 reactions per epoch). 9k images.
  - For test set, we only do 200 reactions per epoch. 1200 images.
@@ -60,32 +66,32 @@
                 "plus"
             ]
 
- - TRAIN:
- - script: run.lsf
-        - --path location where train images are. ex: ../../images/train2017/
-        - --output custom_train.json
- - terminal: bash < run.lsf
+ TRAIN:
+ -     script: run.lsf
+       -      --path location where train images are. ex: ../../images/train2017/
+       -      --output custom_train.json
+       -      terminal: bash < run.lsf
 
- - VAL:
- - script: runval.lsf
-        - --path location where validation images are. ex: ../../images/val2017/
-        - --output custom_val.json
- - terminal: bash < runval.lsf
+ VAL:
+ -     script: runval.lsf
+       -      --path location where validation images are. ex: ../../images/val2017/
+       -      --output custom_val.json
+       -      terminal: bash < runval.lsf
 
- - TEST:
- - Add images to test folder if not done yet.
- - script: runtest.lsf
-        - --path location where validation images are. ex: ../../images/test2017/
-        - --output json_annotest.json
- - terminal: bash < runtest.lsf
+TEST:
+ -     script: runtest.lsf
+       -      --path location where validation images are. ex: ../../images/test2017/
+       -      --output json_annotest.json
+       -      terminal: bash < runtest.lsf
 
 
 #### Step 7: Move json file to images/ folder:
  - folder: DatasetConversion/_Yolo2COCO/output/
-        - terminal: mv json* "path to images/annotations/ folder"
+       
+       terminal: mv json* "path to images/annotations/"
+
+## Run DETR
+Go to folder: DETR_D2wrap/
 
 
-ONCE ALL OF THESE STEPS ARE DONE, MEANS WE HAVE FINISHED CREATING THE SYNTHETIC DATASET.
-       Then we can procced to train the DETR model.
-       To do so, we move to folder /detr/. There we can find a README.md file with instructions on how to train the model.
  
