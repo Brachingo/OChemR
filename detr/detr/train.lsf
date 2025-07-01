@@ -1,9 +1,0 @@
-#BSUB -J finetune-detr
-#BSUB -o finetune-detr.out
-#BSUB -e finetune-detr.err
-#BSUB -q gpuv100
-#BSUB -n 1
-#BSUB -R "span[ptile=1]"
-
-
-python main.py --dataset_file "custom" --coco_path "../../images/" --output_dir "outputs_150e" --resume "detr-r50_no-class-head.pth" --num_classes 4 --epochs 100
