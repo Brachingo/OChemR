@@ -115,7 +115,7 @@ The direction of the reaction is detected by using a simple heuristic. The algor
 
 ### End-to-End OChemR (From image to JSON)
 - Backend/:
-    - Run file `end_to_end.lsf` in the terminal. This will run the whole pipeline from image to JSON file. The output will be saved JSON file in the `output` folder.
+    - Run file `end_to_end.sh` in the terminal. This will run the whole pipeline from image to JSON file. The output will be saved JSON file in the `output` folder.
     - If `--debugging` is set to True, the output from arrow and molecule detection will be saved in their respective folders, allowing to determine what the model is detecting, and how. 
 
 

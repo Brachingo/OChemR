@@ -22,7 +22,7 @@ sys.path.append(p)
 
 # ViT - Detect Objects in image (Molecules - Arrows/+ - Text)
 from Backend.functions.detr_inference import detr_inference
-from detr.detr.models import build_model
+from detectron_2.detr.models import build_model
 print("Imports done for DETR inference.")
 # OCR - Get text from detected Text bboxes from ViT.
 
@@ -44,8 +44,8 @@ print("Imports done for direction inference.")
 # Output
 from Backend.functions.storeresults import storeResults
 
-p = os.path.abspath('detr/detectron2/detr')
-sys.path.append(p)
+#p = os.path.abspath('detr/detectron2/detr')
+#sys.path.append(p)
 # Some basic setup:
 # Setup detectron2 logger
 import detectron2
@@ -223,11 +223,11 @@ def main(args_detr):
     # Load model weights from model_final.pth
     cfg = get_cfg()
     add_detr_config(cfg)
-    cfg.merge_from_file("../DETR_D2wrap/detr/d2/configs/detr_256_6_6_torchvision.yaml")
+    cfg.merge_from_file("../detectron_2/detr/d2/configs/detr_256_6_6_torchvision.yaml")
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5 # Set threshold for this model
     cfg.DATASETS.TRAIN = ("custom_train",)
     cfg.DATASETS.TEST = ("custom_val",)
-    cfg.MODEL.WEIGHTS = '../detr/detectron_2/output/model_final.pth' # Set path model .pth
+    cfg.MODEL.WEIGHTS = '../detectron_2/output/model_final.pth' # Set path model .pth
     cfg.MODEL.DETR.NUM_CLASSES = 4
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 4
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.95 # Confidence threshold for this model
