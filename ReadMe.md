@@ -111,7 +111,7 @@ The direction of the reaction is detected by using a simple heuristic. The algor
 - Follow steps in arrow_78/README.md file.
 
 ### Train: DETR with D2 Wrapper
-- Follow steps in DETR_D2wrap/README.md file.
+- Follow steps in Detectron_2/README.md file.
 
 ### End-to-End OChemR (From image to JSON)
 - Backend/:
