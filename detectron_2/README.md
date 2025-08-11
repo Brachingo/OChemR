@@ -1,5 +1,5 @@
 ## DETR with D2 Wrapper
-### Trainign:
+### Training:
 
     - Examine the Jupyter notebook `detr_finetune.ipynb` for loading all necessary steps and auxiliary functions DETR model training needs.
     - To train the model, I prefer using a separate file, you can create it yourself easily, which is then executed in the terminal, or you can execute it in a screen if you are working on external servers.
